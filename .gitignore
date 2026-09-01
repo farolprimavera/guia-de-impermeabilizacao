@@ -34,6 +34,20 @@ dados-fonte/
 
 
 # ----------------------------------------------------------------------------
+# Leia-me internos
+# ----------------------------------------------------------------------------
+# Instruções escritas durante a montagem do projeto: como buscar os logos das
+# marcas, o que ia em cada subpasta de imagens, como mexer no dados.js. Já
+# cumpriram o papel e hoje descrevem um estado que não existe mais.
+#
+# Eles continuam na sua pasta, só não vão para o repositório.
+LEIA-ME.md
+imagens/LEIA-ME.md
+imagens/marcas/LEIA-ME.md
+imagens/marcas/LEIA-ME.csv
+
+
+# ----------------------------------------------------------------------------
 # Arquivos que o sistema operacional cria sozinho
 # ----------------------------------------------------------------------------
 .DS_Store
@@ -83,5 +97,5 @@ package.json
 # imagens/          precisa subir. 5,8 MB entre fotos de produto e logos.
 #                   O Pages aguenta bem: o limite recomendado é 1 GB.
 #
-# LEIA-ME.md        pode subir. É a explicação de como mexer no projeto,
-#                   sem nada interno.
+# .gitignore        sobe. É o próprio arquivo que define tudo isto, e ver o
+#                   que foi excluído ajuda quem for mexer depois.
