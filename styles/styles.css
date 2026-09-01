@@ -1,0 +1,1881 @@
+/* ═════════════════════════════ FONTES ═════════════════════════════
+   Arquivos locais, em styles/fontes/. O guia NÃO depende mais do Google
+   Fonts: abre sem internet e não avisa ninguém de fora que alguém está
+   olhando o catálogo.
+
+   São 8 arquivos, cerca de 164 KB no total: só os pesos que o guia realmente aplica e só o
+   conjunto latino, que cobre o português. Vieram dos pacotes oficiais
+   @fontsource, que são as mesmas fontes publicadas no Google Fonts.
+
+   font-display: swap faz o texto aparecer na hora com a fonte do sistema
+   e trocar quando a definitiva carregar. Sem isso, uma tela em branco de
+   meio segundo em conexão ruim.
+
+   Os caminhos são relativos a ESTE arquivo, não ao index.html. */
+
+@font-face {
+  font-family: "Barlow Condensed";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("fontes/barlow-condensed-latin-700-normal.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "IBM Plex Sans";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("fontes/ibm-plex-sans-latin-400-normal.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "IBM Plex Sans";
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("fontes/ibm-plex-sans-latin-500-normal.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "IBM Plex Sans";
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("fontes/ibm-plex-sans-latin-600-normal.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "IBM Plex Mono";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("fontes/ibm-plex-mono-latin-400-normal.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "IBM Plex Mono";
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("fontes/ibm-plex-mono-latin-500-normal.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "IBM Plex Mono";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("fontes/ibm-plex-mono-latin-700-normal.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "IBM Plex Mono";
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("fontes/ibm-plex-mono-latin-600-normal.woff2") format("woff2");
+}
+
+/* ==========================================================================
+   styles.css — Guia de impermeabilização
+   Paleta e tipografia estão todas nas variáveis abaixo.
+   ========================================================================== */
+
+:root {
+  /* cores — verde, vermelho e branco da bandeira portuguesa,
+     em tons fechados para aguentar tela de balcão o dia inteiro */
+  --verde-escuro: #0F3B29;
+  --verde: #1B6B45;
+  --verde-claro: #E2EBE4;
+  --vermelho: #B3252C;
+  --vermelho-escuro: #8C1B21;
+  --dourado: #C9A227;
+  --branco: #ffffff;
+
+  /* neutros */
+  --cimento: #EFF1EC;
+  --cimento-escuro: #D9DED6;
+  --superficie: #ffffff;
+  --tinta: #16211C;
+  --tinta-media: #55655C;
+  --linha: #C6CCC4;
+  --linha-forte: #97A198;
+  --alerta: #B3252C;
+  /* Texto sobre fundo escuro: rodapé e cartão de destaque têm fundo
+     escuro nos DOIS temas, então esta cor não é sobrescrita. Antes
+     esses trechos usavam --cimento e --linha, que no tema escuro
+     viram tons escuros: o rodapé ficou com 1,11:1, ilegível. */
+  --texto-sobre-escuro: #EFF1EC;
+
+  /* apelidos antigos, para o resto da folha continuar funcionando */
+  --agua: var(--verde);
+  --agua-escura: var(--verde-escuro);
+  --agua-clara: var(--verde-claro);
+  --sinal: var(--dourado);
+  --asfalto: var(--verde-escuro);
+
+  /* tipografia
+
+     As três fontes são carregadas de styles/fontes/, com @font-face no
+     topo deste arquivo. O guia não depende de internet para nada.
+     A segunda opção de cada linha continua valendo como reserva, caso um
+     arquivo de fonte falte. */
+  --fonte-display: "Barlow Condensed", "Arial Narrow", sans-serif;
+  --fonte-corpo: "IBM Plex Sans", system-ui, -apple-system, sans-serif;
+  --fonte-dado: "IBM Plex Mono", "Courier New", monospace;
+
+  /* espaço */
+  --gutter: 24px;
+  --largura-max: 1180px;
+  --raio: 3px;
+  --sombra-dura: 4px 4px 0 var(--cimento-escuro);
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  background: var(--cimento);
+  color: var(--tinta);
+  font-family: var(--fonte-corpo);
+  font-size: 16px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+
+img { max-width: 100%; display: block; }
+
+button { font: inherit; color: inherit; cursor: pointer; }
+
+:focus-visible {
+  outline: 3px solid var(--agua);
+  outline-offset: 2px;
+}
+
+.conteiner {
+  width: 100%;
+  max-width: var(--largura-max);
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+}
+
+/* ------------------------------ TIPOGRAFIA ------------------------------
+   Duas famílias, com papéis separados. A de display carrega os títulos e
+   os preços, com peso alto: quem passa pelo balcão lê de longe, em pé,
+   muitas vezes sem óculos. A de texto carrega o resto.
+   Nada abaixo de 16 px em texto corrido, pela mesma razão.
+   ---------------------------------------------------------------------- */
+
+h1, h2, h3 {
+  font-family: var(--fonte-display);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  line-height: 1.02;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+h1 { font-size: clamp(2.6rem, 7vw, 4.6rem); }
+h2 { font-size: clamp(1.9rem, 4.4vw, 3rem); }
+h3 { font-size: 1.35rem; letter-spacing: 0; }
+
+.sobrancelha {
+  font-family: var(--fonte-dado);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--agua);
+  margin: 0 0 10px;
+}
+
+.apoio {
+  color: var(--tinta-media);
+  max-width: 58ch;
+  margin: 12px 0 0;
+}
+
+/* --------------------------- AVISO DE EXEMPLO --------------------------- */
+
+.aviso-exemplo {
+  background: var(--sinal);
+  color: var(--tinta);
+  font-size: 0.86rem;
+  padding: 9px var(--gutter);
+  text-align: center;
+  border-bottom: 1.5px solid var(--tinta);
+}
+
+.aviso-exemplo code {
+  font-family: var(--fonte-dado);
+  font-size: 0.82rem;
+  background: rgba(0, 0, 0, 0.12);
+  padding: 1px 5px;
+  border-radius: 2px;
+}
+
+/* --------------------------------- TOPO ---------------------------------
+   O farol é desenhado em SVG, não é imagem: escala sem borrar e não
+   depende de arquivo que possa faltar. As listras branca e vermelha vêm
+   da pintura real de um farol e coincidem com as cores da bandeira de
+   Portugal, de onde vem a família. A faixa verde-branco-vermelho logo
+   abaixo repete a ideia sem escrever nada.
+   ---------------------------------------------------------------------- */
+
+.topo {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  background: var(--verde-escuro);
+  color: var(--branco);
+}
+
+.topo-interno {
+  max-width: var(--largura-max);
+  margin: 0 auto;
+  padding: 14px var(--gutter);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.identidade {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  color: var(--branco);
+  line-height: 1.1;
+}
+
+.identidade-texto { display: flex; flex-direction: column; }
+
+/* o farol: listra vermelha e branca, que é a pintura real de um farol
+   e, por acaso, as cores da bandeira */
+.farol { width: 30px; height: 44px; flex-shrink: 0; }
+
+.identidade-marca {
+  font-family: var(--fonte-display);
+  font-size: 1.5rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+}
+
+.identidade-sub {
+  font-family: var(--fonte-dado);
+  font-size: 0.66rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #A9C6B4;
+}
+
+.menu { display: flex; gap: 4px; }
+
+.menu-item {
+  background: none;
+  border: 1.5px solid transparent;
+  border-radius: var(--raio);
+  padding: 7px 14px;
+  font-family: var(--fonte-dado);
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #BFD5C7;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+
+.menu-item:hover { color: var(--branco); border-color: rgba(255,255,255,0.45); }
+
+.menu-item[aria-current="true"] {
+  background: var(--branco);
+  border-color: var(--branco);
+  color: var(--verde-escuro);
+}
+
+/* barra de camadas: repete o corte do herói em miniatura */
+.corte-barra { display: flex; flex-direction: column; height: 7px; }
+.corte-faixa { display: block; flex: 1; }
+.corte-barra { flex-direction: row; height: 6px; }
+.corte-faixa--protecao  { background: var(--verde); flex: 2; }
+.corte-faixa--membrana  { background: var(--branco); flex: 1; }
+.corte-faixa--primer    { background: var(--vermelho); flex: 2; }
+.corte-faixa--substrato { display: none; }
+
+/* ------------------------------- MIGALHAS ------------------------------- */
+
+.migalhas-faixa {
+  background: var(--superficie);
+  border-bottom: 1.5px solid var(--linha);
+}
+
+.migalhas {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  padding: 11px 0;
+  font-family: var(--fonte-dado);
+  font-size: 0.76rem;
+}
+
+.migalha {
+  background: none;
+  border: none;
+  padding: 0;
+  color: var(--agua);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.migalha--atual { color: var(--tinta-media); text-decoration: none; }
+
+.migalha-sep { color: var(--linha-forte); }
+
+/* -------------------------------- TELAS --------------------------------
+   Todas as telas existem no HTML desde o começo e ficam escondidas por
+   hidden. Trocar de tela é trocar um atributo — não há carregamento, não
+   há espera, funciona sem internet.
+   ---------------------------------------------------------------------- */
+
+.tela { display: none; padding: 44px 0 72px; }
+.tela--ativa { display: block; animation: entrar 0.28s ease both; }
+
+@keyframes entrar {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: none; }
+}
+
+.cabecalho-tela { margin-bottom: 32px; }
+
+/* -------------------------------- INÍCIO -------------------------------- */
+
+.inicio-cabecalho { max-width: 620px; margin-bottom: 34px; }
+
+@media (min-width: 900px) {
+  .tela { padding: 56px 0 90px; }
+}
+
+.inicio-chamada {
+  font-size: 1.1rem;
+  color: var(--tinta-media);
+  max-width: 46ch;
+  margin: 18px 0 30px;
+}
+
+/* busca */
+.busca { position: relative; margin-bottom: 28px; }
+
+.busca-rotulo {
+  display: block;
+  font-family: var(--fonte-dado);
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--tinta-media);
+  margin-bottom: 7px;
+}
+
+.busca-campo {
+  width: 100%;
+  padding: 14px 16px;
+  font-family: var(--fonte-corpo);
+  font-size: 1rem;
+  color: var(--tinta);
+  background: var(--superficie);
+  border: 1.5px solid var(--tinta);
+  border-radius: var(--raio);
+}
+
+.busca-campo::placeholder { color: var(--linha-forte); }
+
+.busca-resultados {
+  position: absolute;
+  z-index: 30;
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  background: var(--superficie);
+  border: 1.5px solid var(--tinta);
+  border-radius: var(--raio);
+  box-shadow: var(--sombra-dura);
+  max-height: 320px;
+  overflow-y: auto;
+}
+
+.busca-item {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  width: 100%;
+  text-align: left;
+  background: none;
+  border: none;
+  border-bottom: 1px solid var(--linha);
+  padding: 11px 14px;
+}
+
+.busca-item:hover { background: var(--agua-clara); }
+
+.busca-tipo {
+  font-family: var(--fonte-dado);
+  font-size: 0.66rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--agua);
+  flex-shrink: 0;
+}
+
+.busca-vazio {
+  padding: 14px;
+  color: var(--tinta-media);
+  font-size: 0.9rem;
+}
+
+/* portas de entrada */
+.portas { display: grid; gap: 14px; }
+
+@media (min-width: 560px) {
+  .portas { grid-template-columns: 1fr 1fr; }
+}
+
+.porta {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  text-align: left;
+  padding: 20px;
+  background: var(--superficie);
+  border: 1.5px solid var(--tinta);
+  border-radius: var(--raio);
+  box-shadow: var(--sombra-dura);
+  transition: transform 0.14s, box-shadow 0.14s;
+}
+
+.porta:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0 var(--linha-forte);
+}
+
+.porta--destaque { background: var(--verde-escuro); color: var(--branco); }
+
+.porta-etiqueta {
+  font-family: var(--fonte-dado);
+  font-size: 0.67rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--agua);
+}
+
+.porta--destaque .porta-etiqueta { color: var(--dourado); }
+
+.porta-titulo {
+  font-family: var(--fonte-display);
+  font-size: 1.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  line-height: 1.05;
+}
+
+.porta-detalhe { font-size: 0.85rem; color: var(--tinta-media); }
+.porta--destaque .porta-detalhe { color: var(--texto-sobre-escuro); opacity: 0.85; }
+
+/* ------------------- ASSINATURA: CORTE DAS CAMADAS -------------------
+   O corte do sistema em quatro camadas. A camada do produto fica acesa e
+   as outras apagadas, com opacidade, nunca sumindo: o cliente precisa ver
+   que existem as outras três, senão a mensagem de "isso é um sistema" se
+   perde. A hachura no substrato é um pattern SVG, imitando desenho
+   técnico de obra.
+   ---------------------------------------------------------------------- */
+
+.corte {
+  margin: 0;
+  display: grid;
+  gap: 24px;
+  align-items: center;
+}
+
+@media (min-width: 760px) {
+  .corte { grid-template-columns: 1fr 1fr; gap: 34px; }
+}
+
+.corte-desenho { width: 100%; height: auto; overflow: visible; max-width: 420px; }
+
+/* a camada onde o produto atua fica em destaque; as outras recuam */
+.camada--apagada { opacity: 0.3; }
+
+.corte-lista li.destacada { color: var(--tinta); font-weight: 500; }
+.corte-lista li.destacada span { background: var(--agua); }
+
+.camada { stroke: var(--tinta); stroke-width: 1.5; }
+.camada--protecao  { fill: var(--linha-forte); }
+.camada--membrana  { fill: var(--agua); }
+.camada--primer    { fill: var(--asfalto); }
+.camada--substrato { fill: var(--cimento-escuro); }
+
+.gota { fill: var(--agua); opacity: 0; }
+
+.gota--1 { animation: cair 3.4s ease-in infinite; }
+.gota--2 { animation: cair 3.4s ease-in 1.1s infinite; }
+.gota--3 { animation: cair 3.4s ease-in 2.2s infinite; }
+
+@keyframes cair {
+  0%   { opacity: 0; transform: translateY(-30px) scale(0.7); }
+  18%  { opacity: 1; transform: translateY(0) scale(1); }
+  55%  { opacity: 1; transform: translateY(110px) scale(1); }
+  72%  { opacity: 1; transform: translateY(118px) scaleY(0.55) scaleX(1.35); }
+  100% { opacity: 0; transform: translateY(118px) translateX(26px) scaleY(0.4) scaleX(1.5); }
+}
+
+.chamadas line { stroke: var(--linha-forte); stroke-width: 1.5; }
+
+.chamadas text {
+  font-family: var(--fonte-dado);
+  font-size: 11px;
+  font-weight: 600;
+  fill: var(--tinta-media);
+  text-anchor: end;
+}
+
+.corte-legenda { margin: 0; }
+
+.corte-titulo {
+  font-family: var(--fonte-dado);
+  font-size: 0.7rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--tinta-media);
+}
+
+.corte-lista {
+  list-style: none;
+  margin: 12px 0 0;
+  padding: 0;
+  display: grid;
+  gap: 8px;
+}
+
+.corte-lista li {
+  display: flex;
+  gap: 11px;
+  align-items: baseline;
+  font-size: 0.92rem;
+  color: var(--tinta-media);
+}
+
+.corte-lista span {
+  font-family: var(--fonte-dado);
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--superficie);
+  background: var(--tinta);
+  min-width: 20px;
+  height: 20px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gota { opacity: 1; animation: none; }
+  .tela--ativa { animation: none; }
+  html { scroll-behavior: auto; }
+  * { transition-duration: 0.01ms !important; }
+}
+
+
+/* --------------------------- MAPA DA CASA ---------------------------
+   Os pontos são posicionados em porcentagem sobre a imagem, então
+   acompanham qualquer largura de tela. O ::after invisível garante 44 px
+   de área de toque mesmo quando o balão desenhado é menor — no celular
+   ele tem cerca de 18 px, pequeno demais para o dedo.
+   ---------------------------------------------------------------------- */
+
+.casa { margin: 0; }
+
+.casa-quadro {
+  position: relative;
+  display: block;
+  line-height: 0;
+  border: 1.5px solid var(--tinta);
+  border-radius: var(--raio);
+  box-shadow: var(--sombra-dura);
+  overflow: hidden;
+  background: var(--superficie);
+}
+
+.casa-imagem { width: 100%; height: auto; }
+
+/* cada ponto fica exatamente sobre a etiqueta já desenhada na imagem */
+.ponto {
+  position: absolute;
+  background: transparent;
+  border: 2.5px solid transparent;
+  border-radius: 7px;
+  padding: 0;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s, transform 0.15s;
+  animation: piscar 2.4s ease-out 3;
+}
+
+.ponto:nth-child(3) { animation-delay: 0.15s; }
+.ponto:nth-child(4) { animation-delay: 0.3s; }
+.ponto:nth-child(5) { animation-delay: 0.45s; }
+.ponto:nth-child(6) { animation-delay: 0.6s; }
+.ponto:nth-child(7) { animation-delay: 0.75s; }
+.ponto:nth-child(8) { animation-delay: 0.9s; }
+
+.ponto:hover,
+.ponto:focus-visible {
+  border-color: var(--sinal);
+  background: rgba(242, 183, 5, 0.22);
+  transform: scale(1.04);
+  outline: none;
+  animation: none;
+}
+
+.ponto-texto {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+@keyframes piscar {
+  0%, 100% { border-color: transparent; }
+  50%      { border-color: rgba(242, 183, 5, 0.85); }
+}
+
+.casa-legenda {
+  font-family: var(--fonte-dado);
+  font-size: 0.74rem;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--tinta-media);
+  margin-top: 12px;
+}
+
+/* mesma lista em botões: no celular a etiqueta da imagem fica pequena demais */
+.casa-lista {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 8px;
+  margin-top: 18px;
+}
+
+.area {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  text-align: left;
+  background: var(--superficie);
+  border: 1.5px solid var(--tinta);
+  border-radius: var(--raio);
+  padding: 12px 14px;
+  font-size: 0.92rem;
+  font-weight: 500;
+  transition: background 0.14s, color 0.14s;
+}
+
+/* --superficie e não uma cor clara fixa: --tinta vira clara no tema
+   escuro, e texto claro sobre ela some. --superficie inverte junto. */
+.area:hover { background: var(--tinta); color: var(--superficie); }
+.area:hover .area-seta { color: var(--sinal); }
+.area-seta { color: var(--agua); font-weight: 600; }
+
+.atalhos { margin-top: 34px; padding-top: 22px; border-top: 1.5px solid var(--linha); }
+
+.atalhos-titulo {
+  font-family: var(--fonte-dado);
+  font-size: 0.72rem;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--tinta-media);
+  margin: 0 0 12px;
+}
+
+.atalhos-grade { display: flex; flex-wrap: wrap; gap: 8px; }
+
+.atalho {
+  background: var(--superficie);
+  border: 1.5px solid var(--linha-forte);
+  border-radius: var(--raio);
+  padding: 9px 14px;
+  font-size: 0.9rem;
+  transition: border-color 0.14s, background 0.14s;
+}
+
+.atalho:hover { border-color: var(--tinta); background: var(--agua-clara); }
+
+.portas { margin-top: 30px; }
+
+/* -------------------------------- GRADES -------------------------------- */
+
+.grade { display: grid; gap: 16px; }
+
+@media (min-width: 620px) {
+  .grade { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (min-width: 950px) {
+  .grade--marcas { grid-template-columns: repeat(3, 1fr); }
+  .grade--problemas { grid-template-columns: repeat(3, 1fr); }
+}
+
+.cartao {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  background: var(--superficie);
+  border: 1.5px solid var(--tinta);
+  border-radius: var(--raio);
+  box-shadow: var(--sombra-dura);
+  padding: 20px;
+  gap: 10px;
+  transition: transform 0.14s, box-shadow 0.14s;
+}
+
+.cartao:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0 var(--linha-forte);
+}
+
+.cartao-topo {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+}
+
+/* Espaço do logo. Deitado, porque marca de material de construção quase
+   sempre tem logo mais largo do que alto: num quadrado de 52 px o nome
+   ficaria ilegível. O fundo é branco porque a maioria dos arquivos de
+   logo vem com fundo transparente desenhado para papel branco. */
+.selo {
+  width: 104px;
+  height: 52px;
+  padding: 5px 7px;
+  flex-shrink: 0;
+  border: 1.5px solid var(--tinta);
+  border-radius: 2px;
+  background: var(--branco);
+  object-fit: contain;
+  display: grid;
+  place-items: center;
+  font-family: var(--fonte-display);
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--tinta);
+}
+
+.cartao-nome {
+  font-family: var(--fonte-display);
+  font-size: 1.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  line-height: 1;
+}
+
+.cartao-resumo { display: block; font-size: 0.93rem; color: var(--tinta-media); margin: 0; }
+
+.cartao-rodape {
+  margin-top: auto;
+  padding-top: 12px;
+  border-top: 1px solid var(--linha);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--fonte-dado);
+  font-size: 0.74rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--tinta-media);
+}
+
+.cartao-seta { color: var(--agua); font-weight: 600; }
+
+.etiqueta-sintomas {
+  display: grid;
+  gap: 5px;
+}
+
+.sintoma {
+  font-size: 0.86rem;
+  color: var(--tinta-media);
+  padding-left: 15px;
+  position: relative;
+}
+
+.sintoma::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.55em;
+  width: 7px;
+  height: 7px;
+  background: var(--agua-clara);
+  border: 1px solid var(--agua);
+  border-radius: 50%;
+}
+
+/* --------------------------- LISTA DE PRODUTOS ---------------------------
+   O cartão tem uma lombada colorida à esquerda, como as etiquetas de
+   prateleira da loja. Altura livre: forçar altura igual cortaria nome de
+   produto, e nome cortado é pior que fileira desalinhada.
+   ---------------------------------------------------------------------- */
+
+.lista-produtos { display: grid; gap: 16px; }
+
+@media (min-width: 820px) {
+  .lista-produtos { grid-template-columns: repeat(2, 1fr); }
+}
+
+.produto {
+  display: grid;
+  grid-template-columns: 10px 1fr;
+  background: var(--superficie);
+  border: 1.5px solid var(--tinta);
+  border-radius: var(--raio);
+  box-shadow: var(--sombra-dura);
+  overflow: hidden;
+  /* position para a área clicável esticada do nome do produto se apoiar,
+     e transition para o leve levante no hover. */
+  position: relative;
+  transition: transform 0.14s, box-shadow 0.14s;
+}
+
+/* a lombada repete as camadas do sistema */
+.produto-lombada {
+  background: linear-gradient(
+    to bottom,
+    var(--linha-forte) 0 25%,
+    var(--agua) 25% 60%,
+    var(--asfalto) 60% 72%,
+    var(--cimento-escuro) 72% 100%
+  );
+}
+
+.produto-corpo { padding: 18px 20px 16px; display: flex; flex-direction: column; gap: 12px; }
+
+.produto-marca {
+  font-family: var(--fonte-dado);
+  font-size: 0.7rem;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--agua);
+}
+
+.produto-nome {
+  font-family: var(--fonte-display);
+  font-size: 1.55rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  line-height: 1.03;
+  margin: 2px 0 0;
+}
+
+.produto-categoria {
+  display: inline-block;
+  align-self: flex-start;
+  font-family: var(--fonte-dado);
+  font-size: 0.7rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  background: var(--cimento);
+  border: 1px solid var(--linha);
+  border-radius: 2px;
+  padding: 3px 8px;
+  color: var(--tinta-media);
+}
+
+.produto-resumo { font-size: 0.93rem; color: var(--tinta-media); margin: 0; }
+
+.dados-rapidos {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  border-top: 1px solid var(--linha);
+  padding-top: 12px;
+}
+
+.dado-rotulo {
+  display: block;
+  font-family: var(--fonte-dado);
+  font-size: 0.65rem;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+  /* --tinta-media e não --linha-forte: cor de linha como cor de texto
+     dava 2,67:1 no tema claro e 2,39:1 no escuro. */
+  color: var(--tinta-media);
+}
+
+.dado-valor { font-size: 0.88rem; font-weight: 500; }
+
+.produto-acoes {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  border-top: 1px solid var(--linha);
+  padding-top: 12px;
+  margin-top: auto;
+}
+
+.preco-partir {
+  margin-right: auto;
+  font-family: var(--fonte-dado);
+  font-size: 0.7rem;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--tinta-media);
+}
+
+.preco-valor {
+  display: block;
+  font-family: var(--fonte-display);
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--tinta);
+  letter-spacing: 0;
+}
+
+/* -------------------------------- BOTÕES -------------------------------- */
+
+.botao {
+  border: 1.5px solid var(--tinta);
+  border-radius: var(--raio);
+  padding: 9px 16px;
+  font-family: var(--fonte-dado);
+  font-size: 0.76rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  transition: background 0.14s, color 0.14s;
+}
+
+.botao--cheio { background: var(--tinta); color: var(--superficie); }
+.botao--cheio:hover { background: var(--agua); border-color: var(--agua); }
+
+.botao--vazado { background: var(--superficie); color: var(--tinta); }
+.botao--vazado:hover { background: var(--cimento); }
+
+.botao--marcado { background: var(--agua); border-color: var(--agua); color: #fff; }
+
+.botao--voltar {
+  background: none;
+  border: none;
+  padding: 0;
+  color: var(--agua);
+  font-family: var(--fonte-dado);
+  font-size: 0.76rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* --------------------------- FICHA DO PRODUTO --------------------------- */
+
+.ficha-topo {
+  display: grid;
+  gap: 28px;
+  padding-bottom: 30px;
+  border-bottom: 1.5px solid var(--linha);
+}
+
+@media (min-width: 880px) {
+  .ficha-topo { grid-template-columns: 1fr 0.85fr; align-items: start; gap: 44px; }
+}
+
+.ficha-imagem {
+  border: 1.5px solid var(--tinta);
+  border-radius: var(--raio);
+  background: var(--superficie);
+  box-shadow: var(--sombra-dura);
+  aspect-ratio: 4 / 3;
+  display: block;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Mesma correção do cartão: a foto cabe inteira dentro da moldura. */
+.ficha-imagem img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  padding: 18px;
+  box-sizing: border-box;
+}
+
+.ficha-imagem-vazia {
+  font-family: var(--fonte-dado);
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--linha-forte);
+  text-align: center;
+  padding: 16px;
+}
+
+.ficha-descricao { font-size: 1.05rem; color: var(--tinta-media); margin: 16px 0 0; max-width: 52ch; }
+
+.ficha-secao { padding: 34px 0; border-bottom: 1.5px solid var(--linha); }
+
+.ficha-secao-titulo {
+  font-family: var(--fonte-dado);
+  font-size: 0.72rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--agua);
+  margin: 0 0 18px;
+}
+
+/* tamanhos e preços */
+.tamanhos { display: grid; gap: 14px; }
+
+@media (min-width: 700px) {
+  .tamanhos { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+}
+
+.tamanho {
+  background: var(--superficie);
+  border: 1.5px solid var(--tinta);
+  border-radius: var(--raio);
+  padding: 16px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.tamanho-cabecalho {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.tamanho-rotulo {
+  font-family: var(--fonte-display);
+  font-size: 1.4rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.tamanho-preco {
+  font-family: var(--fonte-display);
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--agua);
+}
+
+.tamanho-linhas { display: grid; gap: 7px; border-top: 1px solid var(--linha); padding-top: 11px; }
+
+.tamanho-linha {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 0.85rem;
+}
+
+.tamanho-linha dt { color: var(--tinta-media); }
+
+.tamanho-linha dd {
+  margin: 0;
+  font-family: var(--fonte-dado);
+  font-size: 0.8rem;
+  text-align: right;
+}
+
+/* especificações */
+.especificacoes { display: grid; gap: 0; border-top: 1px solid var(--linha); }
+
+.especificacao {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--linha);
+}
+
+@media (min-width: 620px) {
+  .especificacao { grid-template-columns: 220px 1fr; gap: 20px; align-items: baseline; }
+}
+
+.especificacao dt {
+  font-family: var(--fonte-dado);
+  font-size: 0.72rem;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--tinta-media);
+}
+
+.especificacao dd { margin: 0; font-size: 0.95rem; }
+
+.lista-simples { margin: 0; padding-left: 18px; color: var(--tinta-media); }
+
+.aviso-atencao {
+  display: flex;
+  gap: 12px;
+  background: var(--superficie);
+  border: 1.5px solid var(--tinta);
+  border-left: 7px solid var(--sinal);
+  border-radius: var(--raio);
+  padding: 14px 16px;
+  font-size: 0.93rem;
+  margin-top: 20px;
+}
+
+.aviso-atencao strong { display: block; font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; font-family: var(--fonte-dado); }
+
+/* ------------------------------ COMPARAÇÃO ------------------------------
+   Tabela com no máximo 4 colunas. Acima disso não cabe sem rolagem
+   lateral, e rolagem lateral é onde o cliente desiste.
+   ---------------------------------------------------------------------- */
+
+.comparar-rolagem { overflow-x: auto; border: 1.5px solid var(--tinta); border-radius: var(--raio); background: var(--superficie); }
+
+.tabela-comparativa { border-collapse: collapse; width: 100%; min-width: 640px; }
+
+.tabela-comparativa th,
+.tabela-comparativa td {
+  border-bottom: 1px solid var(--linha);
+  border-right: 1px solid var(--linha);
+  padding: 13px 15px;
+  text-align: left;
+  vertical-align: top;
+  font-size: 0.9rem;
+}
+
+.tabela-comparativa th:last-child,
+.tabela-comparativa td:last-child { border-right: none; }
+
+.coluna-rotulo {
+  position: sticky;
+  left: 0;
+  background: var(--cimento);
+  font-family: var(--fonte-dado);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--tinta-media);
+  font-weight: 500;
+  min-width: 170px;
+  z-index: 2;
+}
+
+.cabecalho-produto { background: var(--verde-escuro); color: var(--branco); vertical-align: bottom; }
+
+.cabecalho-produto .produto-marca { color: var(--dourado); }
+
+.cabecalho-produto .cabecalho-nome {
+  font-family: var(--fonte-display);
+  font-size: 1.05rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  line-height: 1.05;
+  display: block;
+  margin: 3px 0 8px;
+}
+
+.cabecalho-produto .preco-mini {
+  font-family: var(--fonte-dado);
+  font-size: 0.78rem;
+  color: var(--texto-sobre-escuro);
+  opacity: 0.85;
+}
+
+.linha-preco td, .linha-preco th { background: var(--agua-clara); }
+
+.tabela-vazia {
+  background: var(--superficie);
+  border: 1.5px dashed var(--linha-forte);
+  border-radius: var(--raio);
+  padding: 40px 24px;
+  text-align: center;
+  color: var(--tinta-media);
+}
+
+/* ------------------------- BANDEJA DE COMPARAÇÃO ------------------------- */
+
+.bandeja {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 50;
+  background: var(--verde-escuro);
+  color: var(--branco);
+  border-top: 3px solid var(--vermelho);
+}
+
+.bandeja-interna {
+  max-width: var(--largura-max);
+  margin: 0 auto;
+  padding: 12px var(--gutter);
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.bandeja-itens { display: flex; gap: 8px; flex-wrap: wrap; flex: 1; min-width: 200px; }
+
+.bandeja-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 2px;
+  padding: 5px 8px 5px 11px;
+  font-family: var(--fonte-dado);
+  font-size: 0.76rem;
+}
+
+.bandeja-remover {
+  background: none;
+  border: none;
+  color: var(--sinal);
+  font-size: 1rem;
+  line-height: 1;
+  padding: 0 2px;
+}
+
+.bandeja-acoes { display: flex; gap: 8px; }
+
+.bandeja .botao--vazado { background: transparent; color: var(--texto-sobre-escuro); border-color: rgba(255, 255, 255, 0.4); }
+.bandeja .botao--vazado:hover { background: rgba(255, 255, 255, 0.12); }
+.bandeja .botao--cheio { background: var(--sinal); border-color: var(--sinal); color: var(--tinta); }
+.bandeja .botao--cheio:hover { background: #ffc61a; border-color: #ffc61a; }
+
+body.com-bandeja { padding-bottom: 92px; }
+
+/* -------------------------------- RODAPÉ --------------------------------
+   Telefone, endereço e horário em toda tela. É televendas: o cliente
+   pode decidir ligar em qualquer ponto da navegação, e não deve precisar
+   voltar ao início para achar o número.
+   ---------------------------------------------------------------------- */
+
+.rodape { background: var(--verde-escuro); color: #B6CBBE; padding: 34px 0; }
+
+.rodape-contatos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 26px;
+  margin: 0 0 10px;
+  padding: 0;
+  list-style: none;
+  font-family: var(--fonte-dado);
+  font-size: 0.8rem;
+  color: var(--branco);
+}
+
+.rodape-contatos strong {
+  display: block;
+  font-size: 0.64rem;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: #8FB19C;
+  font-weight: 500;
+}
+
+.rodape-interno { display: grid; gap: 8px; }
+
+.rodape-linha { margin: 0; font-family: var(--fonte-dado); font-size: 0.78rem; letter-spacing: 0.06em; color: var(--texto-sobre-escuro); }
+
+.rodape-nota { margin: 0; font-size: 0.85rem; max-width: 68ch; }
+
+/* --------------------------- BLOCO DE PREÇO ---------------------------
+   A condição de pagamento anda colada ao valor, nunca em letra miúda no
+   rodapé. A super oferta só vale à vista e retirando na loja; quem vai
+   pagar no cartão precisa descobrir isso aqui, não no caixa.
+   ---------------------------------------------------------------------- */
+
+.preco {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  border-top: 1px solid var(--linha);
+  padding-top: 12px;
+}
+
+.preco-selo {
+  align-self: flex-start;
+  background: var(--vermelho);
+  color: var(--branco);
+  font-family: var(--fonte-dado);
+  font-size: 0.64rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border-radius: 2px;
+  margin-bottom: 4px;
+}
+
+.preco-valor {
+  font-family: var(--fonte-display);
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--tinta);
+}
+
+.preco--oferta .preco-valor { color: var(--vermelho); }
+
+/* a condição tem o mesmo peso do valor: ninguém chega ao caixa surpreendido */
+.preco-condicao {
+  font-size: 0.84rem;
+  font-weight: 500;
+  color: var(--tinta-media);
+}
+
+.preco--oferta .preco-condicao { color: var(--vermelho-escuro); }
+
+.preco-linhas { display: flex; flex-direction: column; gap: 1px; margin-top: 7px; }
+
+.preco-de {
+  font-size: 0.82rem;
+  color: var(--linha-forte);
+  text-decoration: line-through;
+}
+
+.preco-alt { font-size: 0.84rem; color: var(--tinta-media); }
+
+.preco--sem .preco-rotulo {
+  font-family: var(--fonte-display);
+  font-size: 1.4rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--tinta-media);
+}
+
+.tamanho-cor {
+  font-family: var(--fonte-dado);
+  font-size: 0.7rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--tinta-media);
+}
+
+.faixa-acessorios {
+  margin-top: 40px;
+  padding-top: 24px;
+  border-top: 2px solid var(--linha);
+}
+
+/* ------------------------- FOTO NO CARTÃO -------------------------
+   O bloco nasce com display:none e só ganha a classe --ok quando a
+   imagem carrega. Produto sem foto não deixa buraco nem ícone quebrado.
+   Não coloque loading="lazy" aqui: elemento escondido fica fora do
+   layout e o carregamento preguiçoso nunca dispara.
+   ---------------------------------------------------------------------- */
+
+.produto-foto { display: none; }
+
+.produto-foto--ok {
+  display: block;
+  position: relative;
+  margin: -18px -20px 4px;
+  border-bottom: 1px solid var(--linha);
+  background: var(--branco);
+  /* 4/3 e não 16/9: 86 das 118 fotos do acervo são quadradas (mediana 1,0).
+     Numa caixa deitada demais, o balde ficava pequeno no meio com faixas
+     brancas largas dos dois lados. */
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+}
+
+/* A imagem inteira, nunca cortada. Antes era width/height 100% dentro de
+   um grid centrado: a altura em porcentagem não achava referência, a foto
+   crescia até a largura da caixa e o excesso sumia no overflow. Embalagem
+   de balde saía sem tampa e sem base.
+
+   Com max-width e max-height a foto encolhe até caber e para. O que sobra
+   vira espaço branco em volta, que é o certo para foto de produto. */
+.produto-foto--ok img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  padding: 12px;
+  box-sizing: border-box;
+}
+
+/* ------------------------------ CALCULADORA ------------------------------
+   Um campo de metragem no topo dos tamanhos. O resultado nasce escondido e
+   só aparece quando há um número válido, para a ficha não abrir poluída. */
+
+.metragem {
+  border: 1px solid var(--linha);
+  border-radius: 10px;
+  padding: 1rem 1.1rem;
+  margin-bottom: 1.25rem;
+  background: var(--cimento);
+}
+
+.metragem-rotulo {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 0.6rem;
+}
+
+.metragem-linha {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.metragem-campo {
+  width: 8rem;
+  padding: 0.6rem 0.7rem;
+  font-size: 1.05rem;
+  font-family: inherit;
+  border: 1px solid var(--linha-forte);
+  border-radius: 8px;
+  background: var(--superficie);
+  color: inherit;
+}
+
+.metragem-campo:focus-visible {
+  outline: 3px solid var(--verde);
+  outline-offset: 1px;
+}
+
+.metragem-unidade {
+  font-size: 1.05rem;
+  color: var(--tinta-media);
+  margin-right: 0.35rem;
+}
+
+.metragem-ajuda {
+  margin: 0.6rem 0 0;
+  font-size: 0.9rem;
+  color: var(--tinta-media);
+}
+
+.calculo-area { margin: 0.6rem 0 0; }
+
+.calculo {
+  margin: 0;
+  padding: 0.7rem 0.8rem;
+  border-left: 4px solid var(--verde);
+  border-radius: 0;
+  background: var(--cimento);
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.calculo-qtd {
+  font-weight: 700;
+  font-size: 1.05rem;
+}
+
+.calculo-custo {
+  font-size: 1rem;
+  color: var(--tinta);
+}
+
+.calculo-nota,
+.calculo--sem {
+  font-size: 0.88rem;
+  color: var(--tinta-media);
+  line-height: 1.45;
+}
+
+.calculo--sem {
+  border-left-color: var(--linha-forte);
+}
+
+.calculo--melhor {
+  border-left-color: var(--vermelho);
+  background: var(--verde-claro);
+}
+
+.calculo-selo {
+  align-self: flex-start;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--branco);
+  background: var(--vermelho);
+  border-radius: 4px;
+  padding: 0.15rem 0.45rem;
+  margin-bottom: 0.25rem;
+}
+
+/* -------------------- TELA INICIAL: FOCO NA CASA --------------------
+   A busca desceu para baixo da imagem: quem entra deve ver a casa
+   primeiro. Ela continua sendo o segundo elemento na ordem do teclado
+   dentro do conteúdo, porque no HTML vem logo após a lista de áreas. */
+
+.busca--abaixo {
+  margin: 1.75rem auto 0;
+  max-width: 34rem;
+}
+
+/* Os 7 botões repetem os pontos da casa. Em tela larga os pontos têm
+   cerca de 60 px de altura e o dedo ou o mouse acertam sem esforço, então
+   a lista vira repetição visual. Abaixo de 900 px os pontos encolhem para
+   menos de 20 px e a lista passa a ser a forma real de navegar. */
+@media (min-width: 1000px) {
+  .casa-lista { display: none; }
+}
+
+/* Área de toque do ponto. O balão desenhado continua do mesmo tamanho,
+   mas um retângulo invisível o estende até 44 px de altura, que é o
+   mínimo confortável para o dedo. Sem isso, no celular o alvo tem 15 px
+   e o cliente erra de área ou não acerta nada. */
+.ponto { position: absolute; }
+
+.ponto::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  height: 100%;
+  min-width: 44px;
+  min-height: 44px;
+}
+
+/* Quando o arquivo do logo não existe, o img vira uma div com as iniciais.
+   Ela herda a classe .selo, então precisa voltar a ser quadrada: iniciais
+   centradas num retângulo deitado ficariam perdidas no meio do branco. */
+div.selo {
+  width: 52px;
+  padding: 0;
+  background: var(--cimento);
+}
+
+/* ------------------ CELULAR ESTREITO (até 380 px) ------------------
+   Em 320 px o cartão de marca exigia 329 px e criava rolagem lateral: o
+   nome da marca fica ao lado do logo e não tinha onde quebrar. Marca de
+   uma palavra só, como VOTOMASSA, empurrava o cartão inteiro.
+
+   Duas saídas juntas: o topo do cartão pode embrulhar, e o nome pode
+   quebrar dentro da palavra se ainda assim não couber. Nenhuma das duas
+   muda nada em tela maior, onde sobra espaço. */
+@media (max-width: 380px) {
+  .cartao-topo { flex-wrap: wrap; }
+  .cartao-nome { overflow-wrap: anywhere; }
+}
+
+/* ------------------ RÓTULOS EM TELA ESTREITA ------------------
+   As etiquetas em caixa alta ficavam em 10,7 px no celular. Legível
+   sentado, cansativo em pé no balcão com o telefone na mão. */
+/* Vale até 900 px, não só no celular: tablet também se segura na mão,
+   à mesma distância dos olhos. */
+@media (max-width: 900px) {
+  .porta-etiqueta { font-size: 0.78rem; }
+  .busca-rotulo,
+  .sobrancelha,
+  .atalhos-titulo { font-size: 0.8rem; }
+}
+
+/* ---------------------- TELA GRANDE E TV ----------------------
+   Acima de 1800 px o conteúdo ficava travado em 1180 px no meio, com
+   mais de mil pixels de margem vazia de cada lado. Num monitor isso
+   passa; numa TV, que se olha de longe, o texto fica pequeno demais.
+
+   Como as medidas do guia são em rem, aumentar a fonte-base amplia
+   tudo junto: texto, botões, espaçamento e a casa. */
+@media (min-width: 1800px) {
+  html { font-size: 18px; }
+  :root { --largura-max: 1400px; }
+}
+
+@media (min-width: 2400px) {
+  html { font-size: 21px; }
+  :root { --largura-max: 1750px; }
+}
+
+/* ═══════════════════════════ TEMA ESCURO ═══════════════════════════
+   Só sobrescreve variáveis: nenhuma regra de componente foi tocada.
+   Se um dia o tema sair, basta apagar este bloco.
+
+   Vale por padrão para quem já usa o aparelho em modo escuro, e a
+   chavinha do topo troca na hora. A escolha NÃO fica salva, porque o
+   aparelho do balcão é compartilhado e a preferência de um cliente não
+   deve sobrar para o próximo.
+
+   As fotos de produto e os logos continuam em fundo branco de propósito:
+   as 118 imagens vieram com fundo branco do fabricante, e recortá-las
+   não é possível. Em vez de fingir, a foto ganha uma moldura branca
+   arredondada e vira um objeto sobre a página escura. É o que a Amazon
+   faz, pelo mesmo motivo. */
+
+:root {
+  --escuro-fundo: #101614;
+  --escuro-superficie: #182220;
+  --escuro-superficie-2: #1F2B27;
+  --escuro-linha: #33423C;
+  --escuro-linha-forte: #4C5F57;
+  --escuro-tinta: #E8EFEA;
+  --escuro-tinta-media: #9DB0A6;
+  /* verde e vermelho clareados: os tons fechados do tema claro somem
+     no fundo escuro e reprovam em contraste */
+  --escuro-verde: #4FB07C;
+  --escuro-verde-claro: #23372D;
+  --escuro-vermelho: #F0757C;
+  --escuro-dourado: #E0BC49;
+}
+
+@media (prefers-color-scheme: dark) {
+  html:not([data-tema="claro"]) {
+    --verde-escuro: var(--escuro-superficie);
+    --verde: var(--escuro-verde);
+    --verde-claro: var(--escuro-verde-claro);
+    --vermelho: var(--escuro-vermelho);
+    --vermelho-escuro: var(--escuro-vermelho);
+    --dourado: var(--escuro-dourado);
+    --cimento: var(--escuro-superficie-2);
+    --cimento-escuro: var(--escuro-linha);
+    --superficie: var(--escuro-superficie);
+    --tinta: var(--escuro-tinta);
+    --tinta-media: var(--escuro-tinta-media);
+    --linha: var(--escuro-linha);
+    --linha-forte: var(--escuro-linha-forte);
+    --alerta: var(--escuro-vermelho);
+    --sombra-dura: 4px 4px 0 #0A0F0D;
+  }
+}
+
+html[data-tema="escuro"] {
+  --verde-escuro: var(--escuro-superficie);
+  --verde: var(--escuro-verde);
+  --verde-claro: var(--escuro-verde-claro);
+  --vermelho: var(--escuro-vermelho);
+  --vermelho-escuro: var(--escuro-vermelho);
+  --dourado: var(--escuro-dourado);
+  --cimento: var(--escuro-superficie-2);
+  --cimento-escuro: var(--escuro-linha);
+  --superficie: var(--escuro-superficie);
+  --tinta: var(--escuro-tinta);
+  --tinta-media: var(--escuro-tinta-media);
+  --linha: var(--escuro-linha);
+  --linha-forte: var(--escuro-linha-forte);
+  --alerta: var(--escuro-vermelho);
+  --sombra-dura: 4px 4px 0 #0A0F0D;
+}
+
+html[data-tema="escuro"] body { background: var(--escuro-fundo); }
+@media (prefers-color-scheme: dark) {
+  html:not([data-tema="claro"]) body { background: var(--escuro-fundo); }
+}
+
+/* Foto de produto e logo de marca: moldura branca de propósito. */
+html[data-tema="escuro"] .produto-foto--ok,
+html[data-tema="escuro"] .ficha-imagem,
+html[data-tema="escuro"] img.selo {
+  background: var(--branco);
+  border-radius: 8px;
+}
+@media (prefers-color-scheme: dark) {
+  html:not([data-tema="claro"]) .produto-foto--ok,
+  html:not([data-tema="claro"]) .ficha-imagem,
+  html:not([data-tema="claro"]) img.selo {
+    background: var(--branco);
+    border-radius: 8px;
+  }
+}
+
+/* A chavinha no topo */
+.botao-tema {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0 12px;
+  margin-left: 12px;
+  border: 1.5px solid rgba(255, 255, 255, 0.45);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--branco);
+  font-family: var(--fonte-dado);
+  font-size: 0.78rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.botao-tema:hover { border-color: var(--branco); }
+.botao-tema:focus-visible { outline: 3px solid var(--dourado); outline-offset: 2px; }
+.botao-tema svg { width: 17px; height: 17px; flex-shrink: 0; }
+
+@media (max-width: 620px) {
+  .botao-tema { padding: 0; margin-left: 8px; }
+  .botao-tema .botao-tema-texto { display: none; }
+}
+
+/* ───────── Correções de contraste do tema escuro ─────────
+   O cartão de destaque e o selo de oferta têm fundo colorido que muda
+   de claridade entre os temas: no claro o fundo é escuro e o texto vem
+   claro; no escuro o mesmo verde e o mesmo vermelho são clareados para
+   aparecer sobre a página, e aí texto branco em cima deixa de ser
+   legível. Nos dois casos o texto passa a ser escuro. */
+
+html[data-tema="escuro"] .porta--destaque .porta-detalhe,
+html[data-tema="escuro"] .porta--destaque .porta-titulo,
+html[data-tema="escuro"] .porta--destaque { color: var(--texto-sobre-escuro); }
+
+html[data-tema="escuro"] .preco-selo { color: #24090B; }
+
+@media (prefers-color-scheme: dark) {
+  html:not([data-tema="claro"]) .porta--destaque .porta-detalhe,
+  html:not([data-tema="claro"]) .porta--destaque .porta-titulo,
+  html:not([data-tema="claro"]) .porta--destaque { color: var(--texto-sobre-escuro); }
+
+  html:not([data-tema="claro"]) .preco-selo { color: #24090B; }
+}
+
+/* ───────── Cabeçalho em celular estreito ─────────
+   A chavinha do tema somou 52 px ao menu e voltou a criar rolagem lateral
+   em 360 px: o menu passou a exigir 349 px numa faixa de 312 úteis. Aperto
+   o espaçamento e o espaço entre letras dos itens, e encolho a margem da
+   chavinha. Nada some, tudo continua com 44 px de altura de toque. */
+@media (max-width: 420px) {
+  .menu { gap: 1px; }
+  .menu-item { padding: 7px 7px; letter-spacing: 0.02em; }
+  .botao-tema { margin-left: 3px; min-width: 40px; }
+}
+
+@media (max-width: 340px) {
+  .menu-item { font-size: 0.72rem; padding: 7px 5px; }
+}
+
+/* ───────── Alvos de toque ─────────
+   Botões estavam com 39 px de altura e as migalhas com 19. O mínimo
+   confortável para o dedo é 44. Os botões ganham altura mínima sem mudar
+   de aparência — o texto já estava centrado. As migalhas são links de
+   texto corrido, onde 44 px abriria buracos na linha; ganham área
+   vertical por padding, o suficiente para o dedo acertar sem esticar o
+   cabeçalho. */
+.botao {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.migalha {
+  display: inline-flex;
+  align-items: center;
+  min-height: 32px;
+  padding: 2px 0;
+}
+
+/* Tamanho ao lado do preço "a partir de". Discreto de propósito: informa
+   a qual embalagem o valor se refere, sem competir com o número. */
+.preco-tamanho {
+  font-family: var(--fonte-dado);
+  font-size: 0.78rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--tinta-media);
+  margin-left: 8px;
+}
+
+.preco--oferta .preco-tamanho { color: var(--tinta-media); }
+
+.preco-linha-valor {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0 8px;
+}
+
+/* ───────── Título da tela inicial ─────────
+   O h1 comum vai até 4,6rem, o que faz sentido numa página de texto. Aqui
+   a estrela é a casa clicável, e o título em duas linhas empurrava a
+   imagem para 446 px do topo — o cliente precisava rolar para ver o que
+   deveria ver primeiro. Com o teto menor, a casa começa em 287 px e
+   aparece um terço a mais na primeira tela. */
+#tituloInicio { font-size: clamp(2.2rem, 4.4vw, 2.9rem); }
+
+/* ───────── Cartão inteiro clicável ─────────
+   O nome do produto é um botão de verdade, e o ::after dele se estica por
+   todo o cartão. Tocar em qualquer lugar abre a ficha. Para quem navega
+   por teclado ou leitor de tela, existe um botão só, com o nome do
+   produto — melhor que um retângulo enorme sem rótulo.
+
+   O botão Comparar sobe de camada para não ser coberto pela área
+   esticada, senão ele deixaria de funcionar. */
+.produto-link {
+  background: none;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  font: inherit;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.produto-link::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+}
+
+.produto-link:focus-visible { outline: none; }
+.produto-link:focus-visible::after {
+  outline: 3px solid var(--verde);
+  outline-offset: 2px;
+}
+
+.produto:hover { cursor: pointer; }
+
+.produto-acoes { position: relative; z-index: 1; }
+
+/* Sinal de que o cartão é clicável. Sutil de propósito: o cartão sobe um
+   pouco e a sombra endurece, o mesmo vocabulário já usado nos outros
+   cartões do guia. Sem isso, nada indica que dá para tocar no meio. */
+.produto:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0 var(--tinta);
+}
+
+/* Quem prefere menos movimento não recebe o deslocamento. */
+@media (prefers-reduced-motion: reduce) {
+  .produto { transition: none; }
+  .produto:hover { transform: none; }
+}
+
+/* Aviso do limite de comparação, dentro da bandeja. */
+.bandeja-aviso {
+  margin: 6px 0 0;
+  padding: 8px 12px;
+  border-left: 4px solid var(--dourado);
+  background: rgba(255, 255, 255, 0.12);
+  color: var(--texto-sobre-escuro);
+  font-size: 0.92rem;
+  line-height: 1.4;
+  transition: opacity 0.3s;
+}
+
+.bandeja-aviso--saindo { opacity: 0; }
+
+@media (prefers-reduced-motion: reduce) {
+  .bandeja-aviso { transition: none; }
+}

@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<!--
+  GUIA DE IMPERMEABILIZAÇÃO — Farol da Primavera
+
+  Todas as telas moram neste arquivo e ficam escondidas por hidden; o
+  index.js troca qual está visível. Não há carregamento de página, não há
+  servidor: abrir este arquivo já faz o guia funcionar.
+
+  Ordem de carregamento no fim do body: dados.js antes de index.js, porque
+  o segundo usa as listas do primeiro.
+-->
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Guia de impermeabilização</title>
+
+  <link rel="stylesheet" href="styles/styles.css">
+</head>
+<body>
+
+  <!-- ===================== AVISO DE DADOS DE EXEMPLO ===================== -->
+  <div class="aviso-exemplo" id="avisoExemplo" hidden>
+    <strong>Dados de demonstração.</strong>
+    <span>Confira preços e rendimentos na ficha técnica antes de publicar. Edite em <code>dados.js</code>.</span>
+  </div>
+
+  <!-- ============================== TOPO ============================== -->
+  <header class="topo">
+    <div class="topo-interno">
+      <a class="identidade" href="#/inicio" data-ir="inicio">
+        <svg class="farol" viewBox="0 0 30 44" aria-hidden="true">
+          <path d="M9 16h12l2 24H7z" fill="#ffffff"/>
+          <path d="M9.6 23h10.8l.5 6H9.1zM8.3 35h13.4l.4 5H7.9z" fill="#B3252C"/>
+          <rect x="10" y="8" width="10" height="8" rx="1" fill="#ffffff"/>
+          <rect x="11.5" y="10" width="7" height="4" fill="#C9A227"/>
+          <path d="M15 2l3 5h-6z" fill="#ffffff"/>
+          <path d="M22 12h6M2 12h6" stroke="#C9A227" stroke-width="1.6" stroke-linecap="round" opacity="0.8"/>
+        </svg>
+        <span class="identidade-texto">
+          <span class="identidade-marca" id="nomeLoja">Farol da Primavera</span>
+          <span class="identidade-sub" id="subtituloLoja">Guia de impermeabilização</span>
+        </span>
+      </a>
+
+      <nav class="menu" aria-label="Navegação principal">
+        <button class="menu-item" data-ir="marcas">Marcas</button>
+        <button class="menu-item" data-ir="problemas">Problemas</button>
+        <button class="menu-item" data-ir="comparar">Comparar</button>
+        <!-- Chavinha do tema. Começa acompanhando o modo do aparelho e
+             troca na hora. A escolha não é guardada: o aparelho do balcão
+             é compartilhado. -->
+        <button class="botao-tema" id="botaoTema" type="button" aria-pressed="false">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+               stroke-linecap="round" aria-hidden="true" id="iconeTema">
+            <circle cx="12" cy="12" r="4"></circle>
+            <path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"></path>
+          </svg>
+          <span class="botao-tema-texto" id="textoTema">Modo escuro</span>
+        </button>
+      </nav>
+    </div>
+    <div class="corte-barra" aria-hidden="true">
+      <span class="corte-faixa corte-faixa--protecao"></span>
+      <span class="corte-faixa corte-faixa--membrana"></span>
+      <span class="corte-faixa corte-faixa--primer"></span>
+      <span class="corte-faixa corte-faixa--substrato"></span>
+    </div>
+  </header>
+
+  <!-- ============================ MIGALHAS ============================ -->
+  <div class="migalhas-faixa" id="migalhasFaixa" hidden>
+    <div class="conteiner">
+      <nav class="migalhas" id="migalhas" aria-label="Onde você está"></nav>
+    </div>
+  </div>
+
+  <main id="principal">
+
+    <!-- ============================ INÍCIO ============================
+     A ordem aqui importa e foi decidida com o David: título, casa, botões
+     de área, busca. A casa vem antes da busca porque ela é o convite
+     principal; a busca é o atalho de quem já sabe o que quer.
+     ================================================================== -->
+    <section class="tela tela--ativa" id="tela-inicio" aria-labelledby="tituloInicio">
+      <div class="conteiner">
+
+        <div class="inicio-cabecalho">
+          <p class="sobrancelha">Encontre o produto certo</p>
+          <h1 id="tituloInicio">Como podemos ajudar?</h1>
+          <!-- Uma linha só. A menção à busca saiu: ela fica logo abaixo da
+               casa, visível e com rótulo próprio, e as três linhas de texto
+               empurravam a imagem 160 px para baixo. -->
+          <p class="inicio-chamada">Toque na parte da casa onde está o problema.</p>
+        </div>
+
+        <!-- ASSINATURA: a casa com as áreas clicáveis -->
+        <figure class="casa">
+          <div class="casa-quadro" id="casaQuadro">
+            <img
+              class="casa-imagem"
+              id="casaImagem"
+              src="imagens/casa.jpg"
+              srcset="imagens/casa-900.jpg 900w, imagens/casa.jpg 1402w"
+              sizes="(max-width: 900px) 100vw, 1100px"
+              alt="">
+            <!-- os pontos são criados por index.js a partir de CASA.pontos -->
+          </div>
+          <figcaption class="casa-legenda" id="casaLegenda"></figcaption>
+        </figure>
+
+        <!-- mesma lista, em botões grandes. No computador ela some por CSS:
+             lá os pontos da casa têm 60 px e dão conta. No celular os pontos
+             ficam com 18 px de altura, pequenos demais para o dedo, e estes
+             botões viram a forma prática de navegar. -->
+        <div class="casa-lista" id="casaLista" aria-label="Áreas marcadas na imagem"></div>
+
+        <!-- A busca vem depois da casa: o convite principal é a imagem. -->
+        <div class="busca busca--abaixo">
+          <label class="busca-rotulo" for="buscaGeral">Ou busque por marca, produto ou problema</label>
+          <input
+            class="busca-campo"
+            id="buscaGeral"
+            type="search"
+            autocomplete="off"
+            placeholder="Ex.: laje, caixa d'água, Vedapren, box">
+          <ul class="busca-resultados" id="buscaResultados" hidden></ul>
+        </div>
+
+        <div class="atalhos">
+          <p class="atalhos-titulo">Não está na imagem?</p>
+          <div class="atalhos-grade" id="atalhosGrade"></div>
+        </div>
+
+        <div class="portas">
+          <button class="porta" data-ir="marcas">
+            <span class="porta-etiqueta">Já sei a marca</span>
+            <span class="porta-titulo">Escolher por marca</span>
+            <span class="porta-detalhe" id="contagemMarcas"></span>
+          </button>
+
+          <button class="porta porta--destaque" data-ir="problemas">
+            <span class="porta-etiqueta">Quero ver a lista toda</span>
+            <span class="porta-titulo">Escolher por problema</span>
+            <span class="porta-detalhe" id="contagemProblemas"></span>
+          </button>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ============================ MARCAS ============================ -->
+    <section class="tela" id="tela-marcas" aria-labelledby="tituloMarcas" hidden>
+      <div class="conteiner">
+        <header class="cabecalho-tela">
+          <p class="sobrancelha">Seleção por marca</p>
+          <h2 id="tituloMarcas">O que temos de cada marca</h2>
+          <p class="apoio">Toque em uma marca para ver a linha completa, com tamanhos e preços.</p>
+        </header>
+        <div class="grade grade--marcas" id="gradeMarcas"></div>
+      </div>
+    </section>
+
+    <!-- =========================== PROBLEMAS =========================== -->
+    <section class="tela" id="tela-problemas" aria-labelledby="tituloProblemas" hidden>
+      <div class="conteiner">
+        <header class="cabecalho-tela">
+          <p class="sobrancelha">Seleção por problema</p>
+          <h2 id="tituloProblemas">Onde está entrando água?</h2>
+          <p class="apoio">Escolha o lugar do problema e veja quais marcas resolvem.</p>
+        </header>
+        <div class="grade grade--problemas" id="gradeProblemas"></div>
+      </div>
+    </section>
+
+    <!-- ======================= LISTA DE PRODUTOS ======================= -->
+    <section class="tela" id="tela-lista" aria-labelledby="tituloLista" hidden>
+      <div class="conteiner">
+        <header class="cabecalho-tela" id="cabecalhoLista"></header>
+        <div class="lista-produtos" id="listaProdutos"></div>
+      </div>
+    </section>
+
+    <!-- ========================= FICHA DO PRODUTO ========================= -->
+    <section class="tela" id="tela-produto" aria-labelledby="tituloProduto" hidden>
+      <div class="conteiner" id="fichaProduto"></div>
+    </section>
+
+    <!-- ========================== COMPARAÇÃO ========================== -->
+    <section class="tela" id="tela-comparar" aria-labelledby="tituloComparar" hidden>
+      <div class="conteiner">
+        <header class="cabecalho-tela">
+          <p class="sobrancelha">Tabela comparativa</p>
+          <h2 id="tituloComparar">Produtos lado a lado</h2>
+          <p class="apoio" id="apoioComparar"></p>
+        </header>
+        <div class="comparar-corpo" id="compararCorpo"></div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ===================== BARRA DE COMPARAÇÃO ===================== -->
+  <div class="bandeja" id="bandeja" hidden>
+    <div class="bandeja-interna">
+      <div class="bandeja-itens" id="bandejaItens"></div>
+      <!-- Aviso do limite de comparação. Some sozinho depois de alguns
+           segundos. Antes isso era um alert() do navegador, que trava a
+           página e, num aparelho de balcão, parece defeito. -->
+      <p class="bandeja-aviso" id="bandejaAviso" role="status" hidden></p>
+      <div class="bandeja-acoes">
+        <button class="botao botao--vazado" id="limparComparacao">Limpar</button>
+        <button class="botao botao--cheio" id="abrirComparacao">Comparar</button>
+      </div>
+    </div>
+  </div>
+
+  <footer class="rodape">
+    <div class="conteiner rodape-interno">
+      <ul class="rodape-contatos" id="rodapeContatos"></ul>
+      <p class="rodape-linha" id="rodapeLoja"></p>
+      <p class="rodape-nota">
+        Rendimento e secagem variam com temperatura, umidade e preparo da base.
+        Em caso de dúvida, consulte a ficha técnica do fabricante.
+      </p>
+    </div>
+  </footer>
+
+  <script src="scripts/dados.js"></script>
+  <script src="scripts/index.js"></script>
+</body>
+</html>

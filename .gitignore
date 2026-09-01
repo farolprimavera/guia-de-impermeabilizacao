@@ -1,0 +1,87 @@
+# ============================================================================
+# .gitignore — Guia de impermeabilização, Farol da Primavera
+#
+# O repositório precisa ser PÚBLICO: o GitHub Pages só funciona com
+# repositório privado nos planos pagos. Como tudo que subir vira endereço
+# aberto, este arquivo é a única proteção de verdade.
+#
+# Antes de acrescentar algo aqui, lembre: arquivo ignorado existe só no seu
+# computador. Se a máquina der problema, ele se perde.
+# ============================================================================
+
+
+# ----------------------------------------------------------------------------
+# Documentação interna
+# ----------------------------------------------------------------------------
+# Contexto do projeto para o Claude Code: decisões, o que ainda está errado no
+# cadastro da loja, quais fornecedores não responderam, margens de erro de
+# preço. Nada catastrófico, mas é conversa de dentro da loja e viraria
+# seusite.github.io/CLAUDE.md, aberto para qualquer um.
+CLAUDE.md
+
+
+# ----------------------------------------------------------------------------
+# Matéria-prima dos dados
+# ----------------------------------------------------------------------------
+# Aqui estão as três planilhas da loja convertidas em JSON: preço a prazo, à
+# vista e de oferta dos 132 códigos, num formato que qualquer concorrente lê
+# em dois cliques. Os preços aparecem no guia, mas espalhados por 66 fichas —
+# em arquivo único e organizado é outra história.
+#
+# Também ficam aqui os scripts que montaram o dados.js. Guarde esta pasta:
+# refazer daria bastante trabalho.
+dados-fonte/
+
+
+# ----------------------------------------------------------------------------
+# Arquivos que o sistema operacional cria sozinho
+# ----------------------------------------------------------------------------
+.DS_Store
+Thumbs.db
+desktop.ini
+*~
+.*.swp
+
+
+# ----------------------------------------------------------------------------
+# Editores
+# ----------------------------------------------------------------------------
+.vscode/
+.idea/
+
+
+# ----------------------------------------------------------------------------
+# Restos de trabalho
+# ----------------------------------------------------------------------------
+# O preview de arquivo único é gerado, não é fonte: tem o CSS, o JavaScript,
+# as fotos e as fontes embutidos em base64, e pesa 5 MB. Não faz sentido
+# versionar, e o index.html já faz o mesmo papel no site publicado.
+preview.html
+*.zip
+
+# Fotos originais antes do tratamento, se você guardar alguma cópia por aqui.
+imagens/originais/
+imagens/*.png
+
+# node_modules aparece se alguém instalar as fontes de novo pelo npm.
+# Os arquivos que o guia usa já estão em styles/fontes/.
+node_modules/
+package-lock.json
+package.json
+
+
+# ----------------------------------------------------------------------------
+# O QUE NÃO ESTÁ AQUI, E POR QUÊ
+# ----------------------------------------------------------------------------
+# scripts/dados.js  precisa subir. É o conteúdo do guia: sem ele o site abre
+#                   vazio. Os preços ficam públicos, e isso é inevitável —
+#                   eles já estão no site da loja.
+#
+# styles/fontes/    precisa subir. São 160 KB e é o que faz o guia funcionar
+#                   sem internet. Ignorar aqui quebraria a tipografia no ar.
+#
+# imagens/          precisa subir. 5,8 MB entre fotos de produto e logos.
+#                   O Pages aguenta bem: o limite recomendado é 1 GB.
+#
+# LEIA-ME.md        pode subir. É a explicação de como mexer no projeto,
+#                   sem nada interno.
