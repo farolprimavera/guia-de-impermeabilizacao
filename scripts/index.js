@@ -618,6 +618,38 @@
 
   /* ------------------------- LISTAS DE PRODUTOS ------------------------- */
 
+  /* A explicação do tipo só entra quando acrescenta algo. Em 8 dos 66
+     produtos o resumo já diz quase a mesma coisa — a Fita Veda Tudo, por
+     exemplo, tem resumo começando com "fita asfáltica autoadesiva com
+     filme de alumínio, para emenda de telha, rufo e calha", e a explicação
+     repetiria "fita adesiva de alumínio para tapar emenda, rufo e calha".
+     Duas linhas dizendo o mesmo alongam o cartão sem informar.
+
+     A conta é simples: se metade ou mais das palavras da explicação já
+     aparecem no resumo, ela não entra. Palavras curtas e de ligação ficam
+     de fora da comparação, senão qualquer par de frases pareceria igual. */
+  const LIGACAO = ["para", "com", "sem", "que", "uma", "dos", "das",
+                   "pela", "pelo", "mais", "como", "onde", "esta", "este"];
+
+  const palavrasDe = (texto) =>
+    String(texto || "")
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/[^a-z ]/g, " ")
+      .split(/\s+/)
+      .filter((p) => p.length > 3 && LIGACAO.indexOf(p) === -1);
+
+  function mostrarExplicacao(produto) {
+    const explicacao = EXPLICACAO_CATEGORIA[produto.categoria];
+    if (!explicacao) return false;
+    const daExplicacao = palavrasDe(explicacao);
+    if (!daExplicacao.length) return true;
+    const doResumo = palavrasDe(produto.resumo);
+    const repetidas = daExplicacao.filter((p) => doResumo.indexOf(p) !== -1);
+    return repetidas.length / daExplicacao.length < 0.5;
+  }
+
   /* O cartão que aparece em todas as listagens. Desenho único de propósito,
      para o cliente reconhecer o padrao em qualquer tela. */
   function cartaoProduto(produto) {
@@ -649,7 +681,15 @@
               "</button>" +
             "</h3>" +
           "</div>" +
+          /* Termo técnico e tradução, um embaixo do outro. O termo fica
+             porque é o que o vendedor usa na prateleira e com o
+             representante; a tradução entra porque "argamassa polimérica"
+             não diz nada para quem nunca reformou. Nada foi substituído. */
           '<span class="produto-categoria">' + escapar(produto.categoria) + "</span>" +
+          (mostrarExplicacao(produto)
+            ? '<p class="produto-explicacao">' +
+                escapar(EXPLICACAO_CATEGORIA[produto.categoria]) + "</p>"
+            : "") +
           '<p class="produto-resumo">' + escapar(produto.resumo) + "</p>" +
           '<div class="dados-rapidos">' +
             '<div><span class="dado-rotulo">Rendimento</span>' +
@@ -778,6 +818,51 @@
 
   /* --------------------------- FICHA DO PRODUTO --------------------------- */
 
+  /* ---------------------- LEVE JUNTO ----------------------
+     Complemento do produto, na ficha dele. Não é venda casada nem
+     sugestão automática: a lista está escrita à mão no dados.js, produto
+     por produto, e cada par tem um motivo técnico que aparece na tela —
+     "a fita só cola depois do primer", "os dois são usados juntos".
+
+     Nasceu de um problema real de balcão: na lista de telhado o primer
+     aparecia solto no meio dos impermeabilizantes, e o cliente que levava
+     a fita não entendia por que precisaria dele. Aqui o complemento
+     aparece depois de escolher, com a razão junto.
+
+     No máximo dois por produto, priorizando a mesma marca. Três já viram
+     outra lista para escolher, e a escolha era justamente o problema. */
+  function blocoComplementos(produto) {
+    if (!produto.complementos || !produto.complementos.length) return "";
+
+    const itens = produto.complementos
+      .map(produtoDe)
+      .filter(Boolean)
+      .map(function (c) {
+        const preco = menorPreco(c);
+        return (
+          '<button class="complemento" data-rota="produto/' + escapar(c.id) + '">' +
+            '<span class="complemento-marca">' + escapar(marcaDe(c.marcaId).nome) + "</span>" +
+            '<span class="complemento-nome">' + escapar(c.nome) + "</span>" +
+            '<span class="complemento-tipo">' + escapar(c.categoria) + "</span>" +
+            '<span class="complemento-preco">a partir de ' + moeda.format(preco) + "</span>" +
+          "</button>"
+        );
+      })
+      .join("");
+
+    if (!itens) return "";
+
+    return (
+      '<section class="ficha-secao">' +
+        '<h3 class="ficha-secao-titulo">Leve junto</h3>' +
+        (produto.complementoMotivo
+          ? '<p class="complemento-motivo">' + escapar(produto.complementoMotivo) + "</p>"
+          : "") +
+        '<div class="complementos">' + itens + "</div>" +
+      "</section>"
+    );
+  }
+
   /* A ficha completa: preco por tamanho, calculadora de m², ficha técnica,
      o corte do sistema e os problemas que o produto resolve. É a tela mais
      longa do guia e a que mais pesa na venda. */
@@ -896,6 +981,7 @@
           : "") +
         '<div class="tamanhos">' + tamanhos + "</div>" +
       "</section>" +
+      blocoComplementos(produto) +
 
       '<section class="ficha-secao">' +
         '<h3 class="ficha-secao-titulo">Ficha técnica resumida</h3>' +

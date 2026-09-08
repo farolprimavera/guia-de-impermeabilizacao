@@ -1879,3 +1879,83 @@ html[data-tema="escuro"] .preco-selo { color: #24090B; }
 @media (prefers-reduced-motion: reduce) {
   .bandeja-aviso { transition: none; }
 }
+
+/* Tradução do tipo de produto, logo abaixo da etiqueta técnica. Menor e
+   mais clara que o resumo, para se ler como legenda e não competir com
+   ele. */
+.produto-explicacao {
+  margin: 4px 0 0;
+  font-size: 0.9rem;
+  line-height: 1.45;
+  color: var(--tinta-media);
+}
+
+/* ───────── Leve junto ─────────
+   Cartões menores que os da lista, de propósito: são apoio à decisão já
+   tomada, não uma nova lista para escolher. */
+.complemento-motivo {
+  margin: 0 0 14px;
+  color: var(--tinta-media);
+  max-width: 56ch;
+}
+
+.complementos {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 14px;
+}
+
+.complemento {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  text-align: left;
+  background: var(--superficie);
+  border: 1.5px solid var(--linha-forte);
+  border-radius: var(--raio);
+  padding: 14px 16px;
+  min-height: 44px;
+  cursor: pointer;
+  transition: border-color 0.14s, transform 0.14s;
+}
+
+.complemento:hover {
+  border-color: var(--tinta);
+  transform: translate(-2px, -2px);
+}
+
+.complemento:focus-visible {
+  outline: 3px solid var(--verde);
+  outline-offset: 2px;
+}
+
+.complemento-marca {
+  font-family: var(--fonte-dado);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--verde);
+}
+
+.complemento-nome {
+  font-family: var(--fonte-display);
+  font-size: 1.15rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.complemento-tipo {
+  font-size: 0.88rem;
+  color: var(--tinta-media);
+}
+
+.complemento-preco {
+  margin-top: 4px;
+  font-family: var(--fonte-dado);
+  font-size: 0.85rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .complemento { transition: none; }
+  .complemento:hover { transform: none; }
+}

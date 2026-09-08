@@ -35,6 +35,51 @@
    Não invente ficha técnica. Sem fonte, deixe "Consulte a ficha técnica".
    ========================================================================== */
 
+/* ==========================================================================
+   O QUE CADA TIPO DE PRODUTO É, EM LINGUAGEM DE CLIENTE
+
+   A etiqueta do cartão mostra o termo técnico, que é o que o vendedor usa
+   para achar na prateleira e conferir com o representante. Abaixo dela
+   aparece esta explicação, para quem nunca ouviu falar de "argamassa
+   polimérica".
+
+   Nada é substituído: o termo continua lá. Só ganhou tradução.
+
+   Regra ao escrever: diga O QUE É e ONDE SE USA, em uma linha. Nada de
+   explicar química. O cliente quer saber se é aquilo que ele procura.
+   ========================================================================== */
+const EXPLICACAO_CATEGORIA = {
+  "Adesivo estrutural": "Cola de alta resistência para concreto, usada em reparo e ancoragem",
+  "Adesivo para argamassa": "Líquido misturado no reboco para ele grudar melhor e trincar menos",
+  "Aditivo impermeabilizante": "Líquido ou pó misturado no cimento, que impermeabiliza a massa por dentro",
+  "Argamassa polimérica": "Massa que vira camada impermeável. É a escolha de caixa d'água e piscina",
+  "Desmoldante": "Passado na fôrma antes da concretagem, para o concreto soltar sem grudar",
+  "Emulsão asfáltica": "Asfalto líquido preto, aplicado com rolo ou trincha. Barato e resistente",
+  "Espuma expansiva": "Espuma que cresce e preenche vão, buraco e passagem de cano",
+  "Fita asfáltica": "Fita adesiva de alumínio para tapar emenda, rufo e calha do telhado",
+  "Fita multiuso": "Fita adesiva para reparo rápido de vazamento e emenda",
+  "Hidrorrepelente": "Faz a água escorrer da parede sem fechar o poro. Não veda trinca",
+  "Manta asfáltica": "Manta de asfalto em rolo, colada com maçarico ou primer. Para laje grande",
+  "Manta líquida": "Impermeabilizante que se pinta com rolo e vira uma manta ao secar",
+  "Massa asfáltica": "Massa preta grossa para colar manta, calafetar e vedar rodapé",
+  "Massa de calafetar": "Massa mole que preenche junta e fresta sem endurecer de vez",
+  "Massa de vedação": "Massa para tapar furo, fresta e encontro de material diferente",
+  "Massa para trinca": "Massa que fecha trinca de parede antes da pintura",
+  "Primer": "Passado antes do impermeabilizante, para ele grudar na superfície",
+  "Removedor": "Tira tinta, resíduo e sujeira antes de impermeabilizar",
+  "Reparo emergencial": "Estanca vazamento na hora, até mesmo com a água correndo",
+  "Resina de proteção": "Verniz que protege e dá brilho em tijolo, pedra e telha aparente",
+  "Revestimento de fachada": "Tinta grossa de parede externa, que impermeabiliza e disfarça trinca fina",
+  "Selador de fissura": "Fecha fissura e emenda antes de receber o impermeabilizante",
+  "Selante de junta": "Silicone ou poliuretano para junta de dilatação e rejunte de box",
+  "Subcobertura térmica": "Manta de alumínio embaixo da telha, contra calor e goteira",
+  "Tamponamento": "Cimento de pega rápida que estanca jorro d'água em minutos",
+  "Tinta emborrachada": "Tinta elástica que forma película impermeável na parede ou na laje",
+  "Tinta impermeabilizante": "Tinta que impermeabiliza e serve como acabamento",
+  "Veda calha": "Vedante para calha, rufo e telha, que aguenta sol e chuva"
+};
+
+
 /* dados.js — GERADO a partir das planilhas da loja + fichas dos fabricantes.
    Preços: prazo, à vista e super oferta, conforme exportação de 25/08/2026.
    Campos técnicos vazios aparecem como "Consulte o vendedor": nada foi inventado. */
@@ -125,11 +170,11 @@ const PROBLEMAS = [
   },
   {
     id: "fundacao",
-    nome: "Baldrame e fundação",
-    resumo: "Proteção da estrutura enterrada, feita durante a obra.",
+    nome: "Alicerce",
+    resumo: "Proteção da fundação e do baldrame, a estrutura enterrada, feita durante a obra.",
     sintomas: [
       "Obra nova em terreno úmido",
-      "Baldrame pronto, esperando levantar parede",
+      "Alicerce pronto, esperando levantar parede",
       "Muro de arrimo em contato com terra"
     ],
     atencao: "É a etapa mais barata da obra e a que evita o problema mais caro depois."
@@ -931,6 +976,8 @@ const PRODUTOS = [
     problemas: [
       "telhado"
     ],
+    complementos: ["dryko-primer-base-d-agua-dryko-acqua"],
+    complementoMotivo: "A fita só cola depois do primer",
     cores: [],
     demaos: "Consulte a ficha técnica",
     rendimento: "Consulte a ficha técnica",
@@ -1025,6 +1072,8 @@ const PRODUTOS = [
       "telhado",
       "fachada"
     ],
+    complementos: ["coral-selador-mactra-vedbem-trinca"],
+    complementoMotivo: "Trinca precisa ser selada antes da tinta",
     cores: [],
     demaos: "Consulte a ficha técnica",
     rendimento: "Consulte a ficha técnica",
@@ -1567,6 +1616,8 @@ const PRODUTOS = [
     problemas: [
       "telhado"
     ],
+    complementos: ["dryko-primer-base-d-agua-dryko-acqua"],
+    complementoMotivo: "A fita só cola depois do primer, com 6 h de secagem",
     cores: [
       "Branco",
       "Preto"
@@ -1688,6 +1739,8 @@ const PRODUTOS = [
     problemas: [
       "telhado"
     ],
+    complementos: ["dryko-primer-base-d-agua-dryko-acqua"],
+    complementoMotivo: "A fita só cola depois do primer, com 6 h de secagem",
     cores: [
       "Alumínio",
       "Cinza"
@@ -1866,6 +1919,8 @@ const PRODUTOS = [
     problemas: [
       "telhado"
     ],
+    complementos: ["dryko-primer-base-d-agua-dryko-acqua"],
+    complementoMotivo: "A fita só cola depois do primer, com 6 h de secagem",
     cores: [
       "Preto"
     ],
@@ -2040,6 +2095,8 @@ const PRODUTOS = [
     problemas: [
       "fachada"
     ],
+    complementos: ["coral-selador-mactra-vedbem-trinca"],
+    complementoMotivo: "A primeira demão pede selador antes, se a parede tem microfissura",
     cores: [
       "Branco",
       "Grafite",
@@ -2237,6 +2294,8 @@ const PRODUTOS = [
       "laje",
       "telhado"
     ],
+    complementos: ["dryko-primer-base-d-agua-dryko-acqua"],
+    complementoMotivo: "A manta exige primer na base antes de assentar",
     cores: [
       "Alumínio"
     ],
@@ -2615,6 +2674,8 @@ const PRODUTOS = [
     problemas: [
       "telhado"
     ],
+    complementos: ["dryko-primer-base-d-agua-dryko-acqua"],
+    complementoMotivo: "A fita só cola depois do primer, com 6 h de secagem",
     cores: [
       "Preto"
     ],
@@ -3949,6 +4010,8 @@ const PRODUTOS = [
     problemas: [
       "telhado"
     ],
+    complementos: ["viapol-primer-base-d-agua-ecoprimer-viapol"],
+    complementoMotivo: "A fita só cola depois do primer",
     cores: [],
     demaos: "Consulte a ficha técnica",
     rendimento: "Consulte a ficha técnica",
@@ -4154,6 +4217,8 @@ const PRODUTOS = [
       "piscina",
       "fundacao"
     ],
+    complementos: ["votomassa-impermax-7000"],
+    complementoMotivo: "Em reservatório e piscina os dois são usados juntos, o 1000 primeiro",
     cores: [],
     demaos: "2 a 4 demãos, conforme o uso",
     rendimento: "Caixa de 18 kg: 9 m² em piscina, caixa d'água e tanque; 6 m² em área fria. Consumo de 1,0 kg/m² por demão, em 2 a 4 demãos conforme o uso",
@@ -4203,6 +4268,8 @@ const PRODUTOS = [
       "piscina",
       "fundacao"
     ],
+    complementos: ["votomassa-impermax-1000"],
+    complementoMotivo: "Em reservatório e piscina os dois são usados juntos, o 1000 primeiro",
     cores: [],
     demaos: "2 a 4 demãos, conforme o uso, com 4 a 6 h entre elas",
     rendimento: "Caixa de 18 kg: 9 m² em piscina, caixa d'água e tanque; 6 m² em área fria; 4,5 m² em umidade ascendente. Consumo de 1,0 kg/m² por demão",
@@ -4354,7 +4421,7 @@ const CASA = {
     },
     {
       problemaId: "fundacao",
-      rotulo: "Baldrame",
+      rotulo: "Alicerce",
       esquerda: 38.66,
       topo: 90.46,
       largura: 14.98,
