@@ -75,7 +75,13 @@ preview.html
 
 # Fotos originais antes do tratamento, se você guardar alguma cópia por aqui.
 imagens/originais/
+
+# PNG solto na raiz de imagens/ costuma ser original pesado, como a casa.png
+# de 2,5 MB que foi apagada. Mas o logo da loja é PNG e PRECISA subir, senão
+# o cabeçalho fica sem a marca no site publicado — foi o que aconteceu no
+# commit de 09/09.
 imagens/*.png
+!imagens/logo-farol.png
 
 # node_modules aparece se alguém instalar as fontes de novo pelo npm.
 # Os arquivos que o guia usa já estão em styles/fontes/.
