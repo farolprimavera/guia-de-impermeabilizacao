@@ -901,7 +901,7 @@
       )
       .join("");
 
-    const especificacoes = [
+    const especificacoesLista = [
       ["Tipo", produto.categoria],
       ["Base", produto.base],
       ["Como funciona", produto.comoFunciona],
@@ -915,12 +915,26 @@
       ["Durabilidade estimada", produto.durabilidade],
       ["Não usar em", produto.naoUsarEm]
     ]
+      /* Linha sem dado não entra. Antes a tabela mostrava traço em tudo que
+         faltava, e nos 9 produtos sem ficha técnica isso virava onze linhas
+         com sete traços — um terço da tela ocupado para não informar nada.
+         Escondendo, a tabela encolhe e o que existe ganha destaque.
+
+         "Consulte a ficha técnica" e "A confirmar" também contam como
+         vazio: são o jeito do dados.js dizer que ninguém preencheu. */
+      .filter(function (par) {
+        const valor = String(par[1] || "").trim();
+        if (!valor || valor === "—" || valor === "-") return false;
+        return !/^(consulte|a confirmar|não informado|nao informado)/i.test(valor);
+      })
       .map(
         (par) =>
           '<div class="especificacao"><dt>' + escapar(par[0]) + "</dt>" +
           "<dd>" + escapar(par[1]) + "</dd></div>"
-      )
-      .join("");
+      );
+
+    const linhasDaFicha = especificacoesLista.length;
+    const especificacoes = especificacoesLista.join("");
 
     const resolve = produto.problemas
       .map((p) => problemaDe(p))
@@ -983,10 +997,16 @@
       "</section>" +
       blocoComplementos(produto) +
 
-      '<section class="ficha-secao">' +
-        '<h3 class="ficha-secao-titulo">Ficha técnica resumida</h3>' +
-        '<dl class="especificacoes">' + especificacoes + "</dl>" +
-      "</section>" +
+      /* A seção some quando sobra pouca coisa. Nos produtos sem ficha
+         técnica restava só a linha "Tipo", que já aparece na sobrancelha
+         no alto da página — uma seção inteira para repetir o que está três
+         centímetros acima. Com menos de duas linhas, não vale o espaço. */
+      (linhasDaFicha >= 2
+        ? '<section class="ficha-secao">' +
+            '<h3 class="ficha-secao-titulo">Ficha técnica resumida</h3>' +
+            '<dl class="especificacoes">' + especificacoes + "</dl>" +
+          "</section>"
+        : "") +
 
       /* O corte só aparece para quem tem camada no sistema. Sem isso, os 28
          acessórios do catálogo (espuma, veda calha, removedor, massa de
@@ -1439,8 +1459,11 @@
      uma vez só, no fim do arquivo. */
   function iniciar() {
     ligarTema();
-    $("#nomeLoja").textContent = CONFIG.loja;
-    $("#subtituloLoja").textContent = CONFIG.subtitulo;
+    /* O nome da loja agora vem desenhado dentro do logo, então não há mais
+       #nomeLoja no HTML. CONFIG.loja continua sendo usado no rodapé e no
+       título da página. */
+    const sub = $("#subtituloLoja");
+    if (sub) sub.textContent = CONFIG.subtitulo;
 
     $("#rodapeContatos").innerHTML = [
       [CONFIG.telefoneRotulo || "Telefone", CONFIG.telefone],

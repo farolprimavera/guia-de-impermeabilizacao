@@ -218,11 +218,13 @@ h3 { font-size: 1.35rem; letter-spacing: 0; }
 }
 
 /* --------------------------------- TOPO ---------------------------------
-   O farol é desenhado em SVG, não é imagem: escala sem borrar e não
-   depende de arquivo que possa faltar. As listras branca e vermelha vêm
-   da pintura real de um farol e coincidem com as cores da bandeira de
-   Portugal, de onde vem a família. A faixa verde-branco-vermelho logo
-   abaixo repete a ideia sem escrever nada.
+   O cabeçalho traz o logo real da loja, em PNG com fundo transparente.
+   Antes havia um farol desenhado em SVG e o nome escrito em texto ao
+   lado; os dois saíram quando o logo entrou, porque o nome da loja já
+   vem desenhado dentro dele.
+
+   Havia também uma faixa verde-branco-vermelho logo abaixo do cabeçalho.
+   Saiu junto: com a marca ali em cima, virou repetição.
    ---------------------------------------------------------------------- */
 
 .topo {
@@ -257,7 +259,6 @@ h3 { font-size: 1.35rem; letter-spacing: 0; }
 
 /* o farol: listra vermelha e branca, que é a pintura real de um farol
    e, por acaso, as cores da bandeira */
-.farol { width: 30px; height: 44px; flex-shrink: 0; }
 
 .identidade-marca {
   font-family: var(--fonte-display);
@@ -297,15 +298,6 @@ h3 { font-size: 1.35rem; letter-spacing: 0; }
   border-color: var(--branco);
   color: var(--verde-escuro);
 }
-
-/* barra de camadas: repete o corte do herói em miniatura */
-.corte-barra { display: flex; flex-direction: column; height: 7px; }
-.corte-faixa { display: block; flex: 1; }
-.corte-barra { flex-direction: row; height: 6px; }
-.corte-faixa--protecao  { background: var(--verde); flex: 2; }
-.corte-faixa--membrana  { background: var(--branco); flex: 1; }
-.corte-faixa--primer    { background: var(--vermelho); flex: 2; }
-.corte-faixa--substrato { display: none; }
 
 /* ------------------------------- MIGALHAS ------------------------------- */
 
@@ -1958,4 +1950,22 @@ html[data-tema="escuro"] .preco-selo { color: #24090B; }
 @media (prefers-reduced-motion: reduce) {
   .complemento { transition: none; }
   .complemento:hover { transform: none; }
+}
+
+/* ───────── Logo da loja ─────────
+   Sem fundo branco de propósito: o PNG tem fundo transparente e o verde do
+   logo se apoia no verde do cabeçalho. Uma faixa branca funcionava, mas
+   virava o ponto mais claro da tela e roubava atenção da casa.
+
+   64 px é o tamanho em que a linha "Materiais de Construção" ainda se lê.
+   Em 52 vira borrão. */
+.logo-loja {
+  height: 64px;
+  width: auto;
+  display: block;
+  flex-shrink: 0;
+}
+
+@media (max-width: 620px) {
+  .logo-loja { height: 44px; }
 }

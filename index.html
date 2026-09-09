@@ -29,16 +29,13 @@
   <header class="topo">
     <div class="topo-interno">
       <a class="identidade" href="#/inicio" data-ir="inicio">
-        <svg class="farol" viewBox="0 0 30 44" aria-hidden="true">
-          <path d="M9 16h12l2 24H7z" fill="#ffffff"/>
-          <path d="M9.6 23h10.8l.5 6H9.1zM8.3 35h13.4l.4 5H7.9z" fill="#B3252C"/>
-          <rect x="10" y="8" width="10" height="8" rx="1" fill="#ffffff"/>
-          <rect x="11.5" y="10" width="7" height="4" fill="#C9A227"/>
-          <path d="M15 2l3 5h-6z" fill="#ffffff"/>
-          <path d="M22 12h6M2 12h6" stroke="#C9A227" stroke-width="1.6" stroke-linecap="round" opacity="0.8"/>
-        </svg>
+        <!-- Logo real da loja. Substituiu um farol desenhado em SVG. A linha
+             "Materiais de Construção" era preta e sumia sobre o verde do
+             cabeçalho, então foi recolorida no arquivo, na mesma cor clara
+             que o guia usa para texto sobre fundo escuro. -->
+        <img class="logo-loja" src="imagens/logo-farol.png"
+             alt="Farol da Primavera Materiais de Construção">
         <span class="identidade-texto">
-          <span class="identidade-marca" id="nomeLoja">Farol da Primavera</span>
           <span class="identidade-sub" id="subtituloLoja">Guia de impermeabilização</span>
         </span>
       </a>
@@ -59,12 +56,6 @@
           <span class="botao-tema-texto" id="textoTema">Modo escuro</span>
         </button>
       </nav>
-    </div>
-    <div class="corte-barra" aria-hidden="true">
-      <span class="corte-faixa corte-faixa--protecao"></span>
-      <span class="corte-faixa corte-faixa--membrana"></span>
-      <span class="corte-faixa corte-faixa--primer"></span>
-      <span class="corte-faixa corte-faixa--substrato"></span>
     </div>
   </header>
 
