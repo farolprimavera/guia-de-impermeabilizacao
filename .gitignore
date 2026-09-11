@@ -82,6 +82,8 @@ imagens/originais/
 # commit de 09/09.
 imagens/*.png
 !imagens/logo-farol.png
+!imagens/favicon-512.png
+!imagens/apple-touch-icon.png
 
 # node_modules aparece se alguém instalar as fontes de novo pelo npm.
 # Os arquivos que o guia usa já estão em styles/fontes/.
