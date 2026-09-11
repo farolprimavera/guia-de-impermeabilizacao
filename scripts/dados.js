@@ -89,6 +89,11 @@ const CONFIG = {
   loja2: "Materiais de Construção",
   subtitulo: "Guia de impermeabilização",
   telefone: "(21) 2776-3391",
+  /* Mesmo número do televendas, no formato que o WhatsApp exige: 55 do
+     Brasil, 21 do DDD e o número, sem espaço, traço ou parêntese. É um
+     fixo com WhatsApp Business. Se um dia a loja passar a atender por
+     celular, é só trocar aqui. */
+  whatsapp: "552127763391",
   telefoneRotulo: "Televendas",
   endereco: "Av. Jornalista Moacir Padilha, 351",
   horario: "Segunda a sábado, das 8h às 18h",
