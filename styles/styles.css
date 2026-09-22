@@ -1131,6 +1131,143 @@ h3 { font-size: 1.35rem; letter-spacing: 0; }
 
 .aviso-atencao strong { display: block; font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; font-family: var(--fonte-dado); }
 
+/* --------------------------- CORRIJA A CAUSA ANTES ---------------------------
+   Bloco recolhido no topo da lista do problema, com as situações em que
+   impermeabilizante não é a resposta.
+
+   Cores só de variável base (--superficie, --tinta, --linha, --sinal,
+   --agua): o tema escuro reescreve essas variáveis, então o bloco acompanha
+   sem uma linha de CSS específica para o tema. Cor nova aqui seria cor para
+   auditar duas vezes.
+
+   A faixa lateral é dourada como a do .aviso-atencao, e não vermelha: isto
+   orienta, não interdita. Vermelho faria o cliente achar que está proibido
+   de comprar, quando em quatro dos cinco casos a loja vende a solução certa
+   — só em outra ordem.
+   -------------------------------------------------------------------------- */
+
+.causas {
+  border: 1.5px solid var(--linha);
+  border-left: 7px solid var(--sinal);
+  border-radius: var(--raio);
+  background: var(--superficie);
+  padding: 16px 18px;
+  margin-top: 16px;
+}
+
+.causas-titulo {
+  font-family: var(--fonte-dado);
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--tinta);
+  margin: 0;
+}
+
+.causas-apoio {
+  font-size: 0.9rem;
+  color: var(--tinta-media);
+  margin: 6px 0 4px;
+}
+
+.causa { border-top: 1px solid var(--linha); }
+
+.causa-titulo {
+  cursor: pointer;
+  list-style: none;
+  padding: 12px 28px 12px 0;
+  position: relative;
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--tinta);
+  /* alvo de toque: 12 + 12 de padding mais a linha do texto passa de 44 px */
+}
+
+.causa-titulo::-webkit-details-marker { display: none; }
+
+/* Seta própria: a nativa muda de desenho entre navegadores e fica pequena
+   demais para achar no tablet do balcão. */
+.causa-titulo::after {
+  content: "";
+  position: absolute;
+  right: 6px;
+  top: 50%;
+  width: 9px;
+  height: 9px;
+  border-right: 2px solid var(--agua);
+  border-bottom: 2px solid var(--agua);
+  transform: translateY(-70%) rotate(45deg);
+  transition: transform 0.15s ease;
+}
+
+.causa[open] > .causa-titulo::after { transform: translateY(-20%) rotate(-135deg); }
+
+.causa-titulo:focus-visible {
+  outline: 3px solid var(--agua);
+  outline-offset: 2px;
+}
+
+.causa-corpo { padding: 0 0 14px; font-size: 0.92rem; }
+.causa-corpo p { margin: 0 0 10px; }
+
+.causa-confirmacao {
+  font-family: var(--fonte-dado);
+  font-size: 0.83rem;
+  color: var(--tinta-media);
+  border-left: 2px solid var(--linha);
+  padding-left: 10px;
+}
+
+.causa-fazer strong {
+  display: block;
+  font-family: var(--fonte-dado);
+  font-size: 0.73rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--agua);
+}
+
+.causa-depois { color: var(--tinta-media); }
+
+.causa-produtos { display: flex; flex-wrap: wrap; gap: 8px; }
+
+.causa-produto {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1px;
+  text-align: left;
+  background: var(--cimento);
+  border: 1.5px solid var(--linha);
+  border-radius: var(--raio);
+  padding: 9px 12px;
+  cursor: pointer;
+  font: inherit;
+  color: var(--tinta);
+  min-height: 44px;
+}
+
+.causa-produto:hover { border-color: var(--agua); }
+
+.causa-produto:focus-visible {
+  outline: 3px solid var(--agua);
+  outline-offset: 2px;
+}
+
+.causa-produto-marca {
+  font-family: var(--fonte-dado);
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--tinta-media);
+}
+
+.causa-produto-nome { font-size: 0.88rem; font-weight: 600; }
+
+@media (prefers-reduced-motion: reduce) {
+  .causa-titulo::after { transition: none; }
+}
+
 /* ------------------------------ COMPARAÇÃO ------------------------------
    Tabela com no máximo 4 colunas. Acima disso não cabe sem rolagem
    lateral, e rolagem lateral é onde o cliente desiste.
@@ -1186,6 +1323,17 @@ h3 { font-size: 1.35rem; letter-spacing: 0; }
   font-size: 0.78rem;
   color: var(--texto-sobre-escuro);
   opacity: 0.85;
+}
+
+/* O rótulo do tamanho ao lado do "a partir de", no cabeçalho da
+   comparação. Quebra de linha própria: em coluna estreita, valor e rótulo
+   na mesma linha empurravam a coluna e criavam rolagem lateral. */
+.cabecalho-produto .preco-mini-tamanho {
+  display: block;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-size: 0.72rem;
+  opacity: 0.9;
 }
 
 .linha-preco td, .linha-preco th { background: var(--agua-clara); }

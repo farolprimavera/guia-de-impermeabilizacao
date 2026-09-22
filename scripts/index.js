@@ -59,6 +59,15 @@
   /* Buscas por id. São listas curtas (22 marcas, 7 problemas, 66 produtos),
      então varrer o array é mais simples e rápido o bastante. */
   const marcaDe = (id) => MARCAS.find((m) => m.id === id);
+
+  /* Nome da marca sem estourar quando o marcaId não existe em MARCAS. O
+     cartaoProduto já fazia isso; os outros pontos liam `.nome` direto e
+     deixavam a tela em branco. Não é hipótese: o histórico do projeto
+     registra uma "marca fantasma" com nome "?" no dados.js. */
+  const nomeDaMarca = (id) => {
+    const m = marcaDe(id);
+    return m ? m.nome : "";
+  };
   const problemaDe = (id) => PROBLEMAS.find((p) => p.id === id);
   const produtoDe = (id) => PRODUTOS.find((p) => p.id === id);
 
@@ -66,7 +75,33 @@
   const produtosDoProblema = (id) => PRODUTOS.filter((p) => p.problemas.includes(id));
 
   // O preço que vale para o cliente é a oferta, quando existe; senão, o à vista.
+  /* Quantas linhas a busca mostra. Oito cabe na tela sem virar catálogo. */
+  const LIMITE_BUSCA = 8;
+
   const melhorPreco = (t) => (t.precoOferta != null ? t.precoOferta : t.precoVista);
+
+  /* Lê a metragem do jeito que o cliente digita. Devolve NaN no que não
+     for número, e aí a conta simplesmente não aparece.
+
+     REGRA DO PONTO E DA VÍRGULA: se há vírgula, ela é o separador decimal
+     e o ponto é separador de milhar ("1.234,5" = 1234,5). Se não há
+     vírgula, o ponto é decimal ("12.5" = 12,5). É a convenção do pt-BR e
+     cobre os dois jeitos de digitar sem perguntar nada ao cliente.
+     ESPAÇO NO MEIO NÃO VIRA NÚMERO. "5 5" poderia virar 55, e viraria
+     silenciosamente a conta de 55 m². Em vez disso não é número, a conta
+     some e o cliente vê que falta algo — avisar em vez de preencher.
+     Espaço só nas pontas é aparado, que é o caso de quem cola texto.
+
+     AMBIGUIDADE QUE FICA: sem vírgula, "1.234" é lido como 1,234 m². É o
+     mesmo que o campo já fazia antes, então não é mudança de
+     comportamento — e quem tem obra de mil metros cai no aviso de acima
+     de 2000 m² e fala com o vendedor de qualquer jeito. */
+  function metrosDigitados(valor) {
+    let texto = String(valor == null ? "" : valor).trim();
+    if (!texto) return NaN;
+    if (texto.indexOf(",") !== -1) texto = texto.replace(/\./g, "").replace(",", ".");
+    return /^-?\d*\.?\d*$/.test(texto) ? parseFloat(texto) : NaN;
+  }
 
   /* O menor preco entre os tamanhos, para o cartão dizer "a partir de". */
   const menorPreco = (produto) =>
@@ -75,7 +110,22 @@
   /* O tamanho que aparece no topo da ficha. E o mais barato, não o menor:
      quem chega quer saber por quanto comeca. */
   const tamanhoMaisBarato = (produto) =>
-    produto.tamanhos.reduce((a, b) => (melhorPreco(a) <= melhorPreco(b) ? a : b));
+    /* Sem valor inicial, reduce estoura em produto com tamanhos: [].
+       Hoje todos têm, mas o dados.js é editado à mão e um produto novo
+       pode nascer sem tamanho antes de alguém preencher os preços. */
+    (produto.tamanhos || []).reduce(
+      (a, b) => (!a ? b : melhorPreco(a) <= melhorPreco(b) ? a : b),
+      null
+    );
+
+  /* Rótulo do tamanho mais barato, com a cor junto quando existe. É o que
+     acompanha todo preço "a partir de", para ninguém achar que o rolo
+     custa o preço do blister. */
+  const rotuloDoMaisBarato = (produto) => {
+    const t = tamanhoMaisBarato(produto);
+    if (!t) return "";
+    return t.rotulo + (t.cor ? " " + t.cor : "");
+  };
 
   /* ---------------------------- CALCULADORA ----------------------------
      Converte metros quadrados em quantidade de embalagens. Só funciona
@@ -311,7 +361,12 @@
 
   /* Troca a tela visível. Todas existem no HTML desde o início e ficam
      escondidas por hidden; não há carregamento de página. */
-  function mostrarTela(nome) {
+  /* `manterRolagem` serve para quem redesenha a tela em que já está. Tirar
+     um produto da comparação chamava montarComparacao de novo e a página
+     pulava para o topo: com 4 produtos a tabela é longa, e quem estava
+     lendo "Não usar em" perdia a linha a cada remoção. Na troca de tela
+     de verdade a rolagem para o topo continua, que é o certo. */
+  function mostrarTela(nome, manterRolagem) {
     Object.values(TELAS).forEach((id) => {
       const secao = document.getElementById(id);
       secao.hidden = true;
@@ -320,7 +375,7 @@
     const alvo = document.getElementById(TELAS[nome]);
     alvo.hidden = false;
     alvo.classList.add("tela--ativa");
-    window.scrollTo({ top: 0, behavior: "auto" });
+    if (!manterRolagem) window.scrollTo({ top: 0, behavior: "auto" });
   }
 
   /* Acende o item do menu do topo correspondente à tela atual. */
@@ -722,7 +777,10 @@
   /* Monta qualquer listagem de produtos, venha ela de marca ou de problema.
      Os acessórios entram em faixa separada, embaixo: eles não competem com
      o impermeabilizante, complementam. */
-  function montarLista(cabecalho, produtos, trilha, menu) {
+  /* `vazio` é o texto de quando não há produto. Vem de fora porque esta
+     função serve tanto à listagem por área quanto à por marca, e a
+     mensagem antiga dizia "para esta área" nas duas. */
+  function montarLista(cabecalho, produtos, trilha, menu, vazio) {
     marcarMenu(menu);
     migalhas(trilha);
 
@@ -737,7 +795,9 @@
 
     $("#listaProdutos").innerHTML = produtos.length
       ? produtos.map(cartaoProduto).join("")
-      : '<p class="tabela-vazia">Nenhum impermeabilizante cadastrado para esta área.</p>';
+      : '<p class="tabela-vazia">' +
+          escapar(vazio || "Nenhum impermeabilizante cadastrado aqui.") +
+        "</p>";
 
     esconderFotosAusentes($("#listaProdutos"));
 
@@ -774,7 +834,88 @@
         { texto: "Marcas", rota: "marcas" },
         { texto: marca.nome }
       ],
-      "marcas"
+      "marcas",
+      "Nenhum produto cadastrado nesta marca."
+    );
+  }
+
+  /* ------------------------- CORRIJA A CAUSA ANTES -------------------------
+     As cinco situações em que a resposta certa não é um impermeabilizante:
+     calha entupida, laje sem caimento, vazamento hidráulico ativo, rejunte
+     aberto e trinca estrutural. Os dados estão em CAUSAS, no dados.js.
+
+     POR QUE RECOLHIDO. A alternativa era perguntar antes de mostrar produto.
+     Seria mais eficaz e mais arriscado: obriga quem já sabe o que quer a
+     responder pergunta para chegar onde ia. Recolhido, quem se reconhece na
+     pergunta abre, e quem não se reconhece desce para os produtos sem
+     atrito. Se o balcão contar que ninguém vê o bloco, aí vale discutir a
+     pergunta obrigatória — em uma área só, para medir.
+
+     <details> nativo em vez de JS: abre no teclado, é anunciado pelo leitor
+     de tela e continua funcionando se o script quebrar. O primeiro fica
+     aberto quando é o único da área, porque bloco único e fechado some.
+
+     NÃO usa <button> no lugar do <summary>: botão dentro de summary não
+     recebe o clique do jeito esperado, e summary já é o controle. */
+  function blocoCausas(problemaId) {
+    if (typeof CAUSAS === "undefined") return "";
+
+    const causas = CAUSAS.filter(
+      (c) => c.problemas.indexOf(problemaId) !== -1
+    );
+    if (!causas.length) return "";
+
+    const itens = causas
+      .map(function (c, i) {
+        const atalhos = (c.produtos || [])
+          .map(produtoDe)
+          .filter(Boolean)
+          .map(function (p) {
+            return (
+              '<button class="causa-produto" data-rota="produto/' +
+                escapar(p.id) + '">' +
+                '<span class="causa-produto-marca">' +
+                  escapar(nomeDaMarca(p.marcaId)) + "</span>" +
+                '<span class="causa-produto-nome">' + escapar(p.nome) +
+                "</span>" +
+              "</button>"
+            );
+          })
+          .join("");
+
+        const depois =
+          c.depois && atalhos
+            ? '<p class="causa-depois">' + escapar(c.depois) + "</p>" +
+              '<div class="causa-produtos">' + atalhos + "</div>"
+            : c.depois
+            ? '<p class="causa-depois">' + escapar(c.depois) + "</p>"
+            : "";
+
+        return (
+          "<details class=\"causa\"" +
+            (causas.length === 1 ? " open" : "") + ">" +
+            '<summary class="causa-titulo">' + escapar(c.titulo) + "</summary>" +
+            '<div class="causa-corpo">' +
+              '<p class="causa-confirmacao">' + escapar(c.confirmacao) + "</p>" +
+              "<p>" + escapar(c.explicacao) + "</p>" +
+              '<p class="causa-fazer"><strong>O que fazer primeiro</strong>' +
+                escapar(c.oQueFazer) + "</p>" +
+              depois +
+            "</div>" +
+          "</details>"
+        );
+      })
+      .join("");
+
+    return (
+      '<section class="causas" aria-labelledby="causasTitulo">' +
+        '<h3 class="causas-titulo" id="causasTitulo">Antes de escolher o ' +
+          "produto</h3>" +
+        '<p class="causas-apoio">Em alguns casos a água não entra por onde ' +
+          "parece, e impermeabilizante não resolve. Se algo aqui descreve o " +
+          "que você está vendo, comece por isto.</p>" +
+        itens +
+      "</section>"
     );
   }
 
@@ -793,7 +934,8 @@
     const produtos = todos.filter((p) => !p.acessorio);
     estado.acessoriosDoProblema = todos.filter((p) => p.acessorio);
     const marcas = Array.from(new Set(produtos.map((p) => p.marcaId)))
-      .map((m) => marcaDe(m).nome)
+      .map(nomeDaMarca)
+      .filter(Boolean)
       .join(", ");
 
     const cabecalho =
@@ -802,7 +944,8 @@
       '<p class="apoio">' + escapar(problema.resumo) +
       (marcas ? " Marcas disponíveis: " + escapar(marcas) + "." : "") + "</p>" +
       '<div class="aviso-atencao"><div><strong>Antes de vender</strong>' +
-      escapar(problema.atencao) + "</div></div>";
+      escapar(problema.atencao) + "</div></div>" +
+      blocoCausas(id);
 
     montarLista(
       cabecalho,
@@ -812,7 +955,8 @@
         { texto: "Problemas", rota: "problemas" },
         { texto: problema.nome }
       ],
-      "problemas"
+      "problemas",
+      "Nenhum impermeabilizante cadastrado para esta área."
     );
   }
 
@@ -835,7 +979,7 @@
     linhas.push(produto.nome + " (" + produto.categoria + ")");
 
     const campo = $("#campoMetros");
-    const metros = campo ? parseFloat(String(campo.value).replace(",", ".")) : NaN;
+    const metros = campo ? metrosDigitados(campo.value) : NaN;
     const temMetragem = !isNaN(metros) && metros > 0 && metros <= METRAGEM_MAXIMA;
     const maisBarato = tamanhoMaisBarato(produto);
 
@@ -901,10 +1045,12 @@
         const preco = menorPreco(c);
         return (
           '<button class="complemento" data-rota="produto/' + escapar(c.id) + '">' +
-            '<span class="complemento-marca">' + escapar(marcaDe(c.marcaId).nome) + "</span>" +
+            '<span class="complemento-marca">' + escapar(nomeDaMarca(c.marcaId)) + "</span>" +
             '<span class="complemento-nome">' + escapar(c.nome) + "</span>" +
             '<span class="complemento-tipo">' + escapar(c.categoria) + "</span>" +
-            '<span class="complemento-preco">a partir de ' + moeda.format(preco) + "</span>" +
+            '<span class="complemento-preco">a partir de ' + moeda.format(preco) +
+              (c.tamanhos.length > 1 ? " · " + escapar(rotuloDoMaisBarato(c)) : "") +
+            "</span>" +
           "</button>"
         );
       })
@@ -932,11 +1078,15 @@
 
     const marca = marcaDe(produto.marcaId);
     marcarMenu("");
-    migalhas([
-      { texto: "Início", rota: "inicio" },
-      { texto: marca.nome, rota: "marca/" + marca.id },
-      { texto: produto.nome }
-    ]);
+    migalhas(
+      [
+        { texto: "Início", rota: "inicio" },
+        /* Sem a marca a migalha pula direto para o produto, em vez de a
+           ficha inteira não abrir. */
+        marca ? { texto: marca.nome, rota: "marca/" + marca.id } : null,
+        { texto: produto.nome }
+      ].filter(Boolean)
+    );
 
     const tamanhos = produto.tamanhos
       .map(
@@ -1052,8 +1202,16 @@
           '<label class="metragem-rotulo" for="campoMetros">' +
             "Quantos metros quadrados você vai impermeabilizar?</label>" +
           '<div class="metragem-linha">' +
-            '<input class="metragem-campo" id="campoMetros" type="number" ' +
-              'min="0" step="0.5" inputmode="decimal" placeholder="ex.: 25">' +
+            /* NÃO volte para type="number". O navegador descarta a
+               vírgula em vez de tratá-la como separador decimal, e no
+               Brasil a vírgula é o separador decimal: quem digitava
+               "12,5" ficava com "125" no campo e recebia a conta de
+               125 m² — dez vezes o material, sem nenhum aviso na tela.
+               Com type="text" e inputmode="decimal" o teclado do celular
+               continua numérico e a vírgula chega inteira até o
+               metrosDigitados(), que normaliza. */
+            '<input class="metragem-campo" id="campoMetros" type="text" ' +
+              'inputmode="decimal" autocomplete="off" placeholder="ex.: 25">' +
             '<span class="metragem-unidade">m²</span>' +
             '<button class="botao botao--vazado" type="button" id="limparMetros">Limpar</button>' +
           "</div>" +
@@ -1102,7 +1260,7 @@
     const limpar = $("#limparMetros");
     if (campo) {
       const recalcular = function () {
-        const metros = parseFloat(String(campo.value).replace(",", "."));
+        const metros = metrosDigitados(campo.value);
         const valido = !isNaN(metros) && metros > 0;
 
         /* Qual tamanho resolve a obra gastando menos. Comparo pelo pior caso
@@ -1170,6 +1328,7 @@
      e, num aparelho de balcão, passa a impressão de que o guia quebrou.
      O role="status" faz o leitor de tela anunciar sem roubar o foco. */
   let relogioAviso = null;
+  let relogioSaida = null;
 
   function avisarLimite() {
     const aviso = $("#bandejaAviso");
@@ -1179,10 +1338,15 @@
       " produtos por vez. Tire um da lista para incluir outro.";
     aviso.hidden = false;
     aviso.classList.remove("bandeja-aviso--saindo");
+    /* Os DOIS relógios precisam ser cancelados. Só o de 4 s era guardado;
+       o de 300 ms ficava órfão e escondia o aviso NOVO quando o cliente
+       clicava de novo por volta dos 4 s — o aviso piscava e sumia antes
+       de dar tempo de ler, e o botão parecia não fazer nada. */
     clearTimeout(relogioAviso);
+    clearTimeout(relogioSaida);
     relogioAviso = setTimeout(function () {
       aviso.classList.add("bandeja-aviso--saindo");
-      setTimeout(function () { aviso.hidden = true; }, 300);
+      relogioSaida = setTimeout(function () { aviso.hidden = true; }, 300);
     }, 4000);
   }
 
@@ -1205,7 +1369,8 @@
     atualizarBandeja();
     atualizarBotoesComparar();
 
-    if (!document.getElementById(TELAS.comparar).hidden) montarComparacao();
+    /* true = redesenho da tela em que o cliente já está; não rolar. */
+    if (!document.getElementById(TELAS.comparar).hidden) montarComparacao(true);
   }
 
   /* Sincroniza o texto e o estado de todos os botões Comparar da tela, que
@@ -1245,7 +1410,7 @@
 
   /* Tabela lado a lado. As linhas vem de LINHAS_COMPARACAO, no dados.js,
      e não daqui: assim dá para mudar o que se compara sem mexer em código. */
-  function montarComparacao() {
+  function montarComparacao(manterRolagem) {
     marcarMenu("comparar");
     migalhas([{ texto: "Início", rota: "inicio" }, { texto: "Comparar" }]);
 
@@ -1261,7 +1426,7 @@
           "<p>Nenhum produto selecionado ainda.</p>" +
           '<button class="botao botao--cheio" data-rota="problemas">Escolher por problema</button>' +
         "</div>";
-      mostrarTela("comparar");
+      mostrarTela("comparar", manterRolagem);
       return;
     }
 
@@ -1275,14 +1440,34 @@
         const marca = marcaDe(p.marcaId);
         return (
           '<th scope="col" class="cabecalho-produto">' +
-            '<span class="produto-marca">' + escapar(marca.nome) + "</span>" +
+            '<span class="produto-marca">' + escapar(marca ? marca.nome : "") + "</span>" +
             '<span class="cabecalho-nome">' + escapar(p.nome) + "</span>" +
-            '<span class="preco-mini">a partir de ' + moeda.format(menorPreco(p)) + "</span>" +
+            /* O rótulo do tamanho anda junto do "a partir de" desde 31/08:
+               sem ele o cabeçalho da Fita Veda Tudo diz R$ 9,90, que é o
+               blister, enquanto o rolo de 90 cm custa R$ 247,90. */
+            '<span class="preco-mini">a partir de ' + moeda.format(menorPreco(p)) +
+              (p.tamanhos.length > 1
+                ? ' <span class="preco-mini-tamanho">· ' +
+                  escapar(rotuloDoMaisBarato(p)) + "</span>"
+                : "") +
+            "</span>" +
           "</th>"
         );
       })
       .join("");
 
+    /* Esta linha mostrava "R$ NaN" em todos os tamanhos de todos os
+       produtos: lia `t.preco`, campo que nunca existiu — os tamanhos têm
+       precoPrazo, precoVista e precoOferta.
+
+       Usa melhorPreco, o mesmo critério do resto do guia (oferta quando
+       existe), e respeita precoDesatualizado. Sem isso a tabela mostraria
+       R$ 247,90 na fita Dryko de 90 cm enquanto a ficha do mesmo produto
+       diz "Preço a confirmar" — a contradição que a calculadora já evita.
+
+       O rótulo leva a cor junto porque a cor saiu do nome do produto em
+       agosto: sem ela o Lar Decryl lista "4 kg" três vezes, com o mesmo
+       preço e nenhuma diferença visível. A ficha do produto já faz assim. */
     const linhaTamanhos =
       '<tr class="linha-preco">' +
         '<th scope="row" class="coluna-rotulo">Tamanhos e preços</th>' +
@@ -1291,7 +1476,13 @@
             (p) =>
               "<td>" +
               p.tamanhos
-                .map((t) => escapar(t.rotulo) + " — " + moeda.format(t.preco))
+                .map(function (t) {
+                  const nome = t.rotulo + (t.cor ? " " + t.cor : "");
+                  return escapar(nome) + " — " +
+                    (t.precoDesatualizado
+                      ? "a confirmar"
+                      : moeda.format(melhorPreco(t)));
+                })
                 .join("<br>") +
               "</td>"
           )
@@ -1330,7 +1521,7 @@
         "</table>" +
       "</div>";
 
-    mostrarTela("comparar");
+    mostrarTela("comparar", manterRolagem);
   }
 
   /* -------------------------------- BUSCA -------------------------------- */
@@ -1349,36 +1540,99 @@
      costuma descrever o que vê ("infiltração no teto") e não o nome do
      produto. Mínimo de 2 letras para não devolver o catálogo inteiro. */
   function buscar(termo) {
-    const t = normalizar(termo);
+    const t = normalizar(termo).trim();
+    /* .trim() depois de normalizar: dois espaços passavam do mínimo de 2
+       caracteres e casavam com qualquer nome que tenha espaço, devolvendo
+       8 resultados aleatórios. */
     if (t.length < 2) return [];
 
-    const achados = [];
+    const marcas = [];
+    const problemas = [];
+    const causas = [];
+    const produtos = [];
 
     MARCAS.forEach((m) => {
       if (normalizar(m.nome + " " + m.resumo + " " + m.forte).includes(t)) {
-        achados.push({ tipo: "Marca", texto: m.nome, rota: "marca/" + m.id });
+        marcas.push({ tipo: "Marca", texto: m.nome, rota: "marca/" + m.id });
       }
     });
 
     PROBLEMAS.forEach((p) => {
       const campo = p.nome + " " + p.resumo + " " + p.sintomas.join(" ");
       if (normalizar(campo).includes(t)) {
-        achados.push({ tipo: "Problema", texto: p.nome, rota: "problema/" + p.id });
+        problemas.push({ tipo: "Problema", texto: p.nome, rota: "problema/" + p.id });
       }
     });
+
+    /* As causas entram depois dos problemas e antes dos produtos: quem
+       digita "calha entupida" ou "rejunte" está descrevendo a situação, e
+       antes disto esses termos não levavam a lugar nenhum útil.
+
+       Uma causa pode valer para várias áreas — trinca estrutural vale para
+       quatro — e cada área vira uma linha, porque o cliente precisa dizer
+       onde. O teto de 3 linhas existe para que uma causa espalhada não
+       ocupe sozinha a lista e empurre os produtos para fora: quem busca
+       "trinca" também quer ver o Selador Vedbem Trinca. */
+    if (typeof CAUSAS !== "undefined") {
+      CAUSAS.forEach((c) => {
+        const campo =
+          c.titulo + " " + c.confirmacao + " " + c.oQueFazer + " " + c.termos;
+        if (!normalizar(campo).includes(t)) return;
+
+        c.problemas.forEach((idProblema) => {
+          const problema = problemaDe(idProblema);
+          if (!problema) return;
+          causas.push({
+            tipo: "Antes de comprar",
+            texto: c.titulo + " · " + problema.nome,
+            rota: "problema/" + problema.id
+          });
+        });
+      });
+    }
 
     PRODUTOS.forEach((p) => {
       const campo = p.nome + " " + p.categoria + " " + p.resumo + " " + p.base;
       if (normalizar(campo).includes(t)) {
-        achados.push({
+        const marca = marcaDe(p.marcaId);
+        produtos.push({
           tipo: "Produto",
-          texto: p.nome + " · " + marcaDe(p.marcaId).nome,
+          texto: p.nome + (marca ? " · " + marca.nome : ""),
           rota: "produto/" + p.id
         });
       }
     });
 
-    return achados.slice(0, 8);
+    /* COTA POR TIPO. Antes o teto de 8 era global e os produtos entravam
+       por último, então marca engolia produto: "manta" devolvia 7 marcas
+       e UM produto, escondendo os outros 20 — e seis dessas marcas
+       casaram pelo texto do resumo, não pelo nome.
+
+       Cada tipo tem um teto próprio e os produtos ficam com o resto, que
+       é o que o cliente veio buscar. Se algum tipo não preenche a cota, a
+       sobra volta para a lista na ordem em que está aqui: quem busca uma
+       marca pelo nome continua vendo todas as marcas quando não há
+       produto concorrendo pelo espaço. */
+    const cotas = [
+      { itens: marcas, teto: 2 },
+      { itens: problemas, teto: 2 },
+      { itens: causas, teto: 3 },
+      { itens: produtos, teto: LIMITE_BUSCA }
+    ];
+
+    const achados = [];
+    cotas.forEach((c) => achados.push.apply(achados, c.itens.slice(0, c.teto)));
+
+    if (achados.length < LIMITE_BUSCA) {
+      cotas.forEach((c) => {
+        const sobra = c.itens.slice(c.teto, c.itens.length);
+        sobra.forEach((item) => {
+          if (achados.length < LIMITE_BUSCA) achados.push(item);
+        });
+      });
+    }
+
+    return achados.slice(0, LIMITE_BUSCA);
   }
 
   /* Desenha a lista de resultados embaixo do campo de busca. */
@@ -1461,7 +1715,8 @@
     estado.comparacao = [];
     atualizarBandeja();
     atualizarBotoesComparar();
-    if (!document.getElementById(TELAS.comparar).hidden) montarComparacao();
+    /* true = redesenho da tela em que o cliente já está; não rolar. */
+    if (!document.getElementById(TELAS.comparar).hidden) montarComparacao(true);
   });
 
   $("#abrirComparacao").addEventListener("click", function () {

@@ -1114,7 +1114,7 @@ const PRODUTOS = [
   {
     id: "coral-manta-liquida-mactra-premium",
     marcaId: "coral",
-    nome: "Manta Liquida Mactra Premium .",
+    nome: "Manta Liquida Mactra Premium",
     categoria: "Manta líquida",
     acessorio: false,
     base: "Resina acrílica, cargas inertes, biocida e água",
@@ -4530,5 +4530,152 @@ const LINHAS_COMPARACAO = [
   {
     campo: "naoUsarEm",
     rotulo: "Não usar em"
+  }
+];
+
+/* ==========================================================================
+   CAUSAS — quando a resposta certa NÃO é um impermeabilizante.
+
+   Cinco situações em que vender produto não resolve, porque a água não está
+   entrando por onde o cliente acha que está. Vender assim faz a pessoa voltar
+   em três meses achando que o produto é ruim.
+
+   Isto não é ficha técnica de fabricante: é regra de quando não recomendar.
+   Por isso não precisa de fonte de fornecedor, ao contrário do resto.
+
+   COMO APARECE NA TELA
+   Bloco recolhido no topo da lista do problema, antes dos produtos. Quem se
+   reconhece na pergunta abre; quem não, desce direto para os produtos. Não
+   bloqueia ninguém de propósito — cliente obrigado a responder pergunta é
+   cliente que fecha a tela.
+
+   CAMPOS
+   problemas   em quais áreas o bloco aparece. Todo id precisa existir em
+               PROBLEMAS.
+   titulo      a pergunta, do jeito que o cliente descreveria.
+   confirmacao o sintoma que confirma o caso. É o "se isso, então é isto".
+   explicacao  por que produto não resolve. Sem isso o aviso vira ordem sem
+               motivo, e ninguém obedece ordem sem motivo.
+   oQueFazer   a ação correta, na ordem certa.
+   depois      o que a loja oferece DEPOIS da causa corrigida. Vazio quando o
+               guia não tem o produto — e aí é melhor dizer isso do que
+               empurrar o que tem.
+   produtos    ids de PRODUTOS. Aparecem como atalho, e só fazem sentido
+               depois da causa resolvida.
+   termos      palavras que levam a busca até aqui. O cliente digita
+               "calha entupida", não "manutenção de sistema de drenagem".
+   ========================================================================== */
+
+const CAUSAS = [
+  {
+    id: "calha-transbordando",
+    problemas: ["telhado"],
+    titulo: "A calha transborda quando chove forte?",
+    confirmacao:
+      "Transborda ou devolve água para dentro, mas não tem furo nem " +
+      "emenda aberta visível.",
+    explicacao:
+      "Calha entupida, ou sem caimento até o condutor, enche e devolve a " +
+      "água. Nesse caso a água não está passando por um furo: ela está " +
+      "sobrando. Vedante nenhum dá conta, porque não existe o que vedar.",
+    oQueFazer:
+      "Desobstruir a calha e conferir o caimento até o condutor. Folha, " +
+      "ninho e terra acumulada são a causa mais comum.",
+    depois:
+      "Se, com a calha limpa e o caimento certo, ainda vazar num furo ou " +
+      "numa emenda, aí sim é vedação:",
+    produtos: [
+      "amazonas-veda-calha-aluminio-amazonas",
+      "brascola-veda-calha-transparente-brascola",
+      "pulvitec-veda-calha-cinza-pulvitec",
+      "unipega-veda-calha-cinza-unipega"
+    ],
+    termos: "calha entupida transborda transbordando obstruida folha caimento condutor"
+  },
+
+  {
+    id: "laje-empocada",
+    problemas: ["laje"],
+    titulo: "Fica poça na laje depois da chuva?",
+    confirmacao:
+      "A água empoça e demora a sumir, em vez de correr para o ralo.",
+    explicacao:
+      "Poça é falta de caimento, não falta de impermeabilização. Membrana " +
+      "aplicada sobre área que vive empoçada trabalha o tempo todo " +
+      "encharcada, descola antes da hora e o problema volta pior.",
+    oQueFazer:
+      "Corrigir o caimento até o ralo com argamassa de regularização, " +
+      "antes de qualquer membrana.",
+    depois:
+      "A argamassa de regularização em si não está neste guia — pergunte no " +
+      "balcão. O que vai dentro dela para melhorar a aderência, temos:",
+    produtos: ["ciplak-bianco-biancola-ciplak", "dryko-drykofix"],
+    termos: "poca poça empoçada empocada agua parada caimento ralo laje nivelada"
+  },
+
+  {
+    id: "vazamento-hidraulico",
+    problemas: ["banheiro", "piscina", "reservatorio"],
+    titulo: "O vazamento é do encanamento?",
+    confirmacao:
+      "A água aparece junto de um tubo, de um registro ou do ralo, e piora " +
+      "quando aquela tubulação é usada.",
+    explicacao:
+      "Impermeabilizante protege a estrutura contra a água que encosta " +
+      "nela. Ele não segura água sob pressão saindo de tubo furado, e não " +
+      "cura sobre superfície que vive molhada por um vazamento ativo.",
+    oQueFazer:
+      "Fechar o registro, localizar e consertar o vazamento. Só depois " +
+      "impermeabilizar, com a base seca.",
+    depois:
+      "Para estancar agora e ganhar tempo até o conserto — isto tapa, não " +
+      "resolve:",
+    produtos: ["sika-sika-n-2", "dryko-vedatudo-s-o-s"],
+    termos: "vazamento hidraulico encanamento tubo cano registro jorrando pressao"
+  },
+
+  {
+    id: "rejunte-aberto",
+    problemas: ["banheiro"],
+    titulo: "O rejunte do box está aberto ou esfarelando?",
+    confirmacao:
+      "A junta entre as peças está escura, aberta ou solta, e a umidade " +
+      "acompanha essas linhas.",
+    explicacao:
+      "Rejunte deteriorado deixa a água passar pela junta superficial. Isso " +
+      "não quer dizer que a impermeabilização debaixo do piso falhou — e " +
+      "trocar o rejunte custa uma fração de arrancar o revestimento.",
+    oQueFazer:
+      "Remover o rejunte solto e refazer. Se o problema sumir, era isso. " +
+      "Se continuar mesmo com o rejunte inteiro, aí sim é a " +
+      "impermeabilização sob o piso, e o caso muda de tamanho.",
+    depois: "",
+    produtos: [],
+    termos: "rejunte junta esfarelando escuro box azulejo"
+  },
+
+  {
+    id: "trinca-estrutural",
+    problemas: ["fachada", "laje", "piscina", "reservatorio"],
+    titulo: "É fissura fina ou trinca que atravessa?",
+    confirmacao:
+      "Trinca larga, que volta depois de tapada, que atravessa a espessura " +
+      "ou que anda junto com desnível de porta e janela.",
+    explicacao:
+      "Fissura fina e parada, no revestimento, se trata e se cobre. Trinca " +
+      "estrutural é a estrutura se movendo: qualquer produto aplicado por " +
+      "cima abre de novo, porque o que rasga não é o produto, é o que está " +
+      "embaixo dele.",
+    oQueFazer:
+      "Trinca que volta, que cresce ou que atravessa pede avaliação de quem " +
+      "entende de estrutura antes de qualquer produto. Acabamento não " +
+      "substitui reparo estrutural.",
+    depois:
+      "Para fissura fina e parada, que é outro caso, o guia tem tratamento:",
+    produtos: [
+      "coral-selador-mactra-vedbem-trinca",
+      "aditivmais-selatop-max-aditivmais"
+    ],
+    termos: "trinca rachadura fissura estrutural abriu atravessa movimentacao"
   }
 ];
