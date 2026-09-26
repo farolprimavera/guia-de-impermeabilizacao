@@ -531,11 +531,7 @@ const PRODUTOS = [
     resumo: "Aditivo impermeabilizante em pó, dosado de 1% do peso do cimento em reboco de área seca até 4% em área molhada. Resiste a pressão de água nos dois sentidos e fecha fissura estática de até 0,3 mm. O fabricante proíbe misturar com impermeabilizante de outra marca.",
     resumoOrigem: "ficha do fabricante",
     comoFunciona: "",
-    problemas: [
-      "fundacao",
-      "banheiro",
-      "reservatorio"
-    ],
+    problemas: ["fundacao", "banheiro"],
     cores: [],
     demaos: "Consulte a ficha técnica",
     rendimento: "Consulte a ficha técnica",
@@ -1273,9 +1269,7 @@ const PRODUTOS = [
     resumo: "Diminuição de Temperatura do Telhado e proteção de umidade em caso de goteira Largura 1,20m 8,33m linear.",
     resumoOrigem: "descrição da loja",
     comoFunciona: "",
-    problemas: [
-      "telhado"
-    ],
+    problemas: [],
     cores: [],
     demaos: "Consulte a ficha técnica",
     rendimento: "Consulte a ficha técnica",
@@ -1331,9 +1325,7 @@ const PRODUTOS = [
     resumo: "Diminuição de Temperatura do Telhado e proteção de umidade em caso de goteira Largura 1,20m 8,33m linear.",
     resumoOrigem: "descrição da loja",
     comoFunciona: "",
-    problemas: [
-      "telhado"
-    ],
+    problemas: [],
     cores: [],
     demaos: "Consulte a ficha técnica",
     rendimento: "Consulte a ficha técnica",
@@ -1570,12 +1562,7 @@ const PRODUTOS = [
     resumo: "Argamassa polimérica bicomponente para área molhada, reservatório e estrutura enterrada. Resiste a pressão de água nos dois sentidos e não altera a potabilidade. O consumo muda com o uso: 2 kg/m² contra umidade do solo, 3 kg/m² em área molhada e 4 a 5 kg/m² em subsolo. Aceita azulejo por cima com AC-III.",
     resumoOrigem: "ficha do fabricante",
     comoFunciona: "",
-    problemas: [
-      "banheiro",
-      "reservatorio",
-      "piscina",
-      "fundacao"
-    ],
+    problemas: ["banheiro", "piscina", "fundacao"],
     cores: [],
     demaos: "Demãos cruzadas até atingir o consumo",
     rendimento: "Varia com o uso: 2 kg/m² umidade do solo · 3 kg/m² área molhada · 4 a 5 kg/m² subsolo",
@@ -1618,9 +1605,7 @@ const PRODUTOS = [
     resumo: "Fita emborrachada de alta aderência para reparo imediato em plástico, metal, madeira, vinil e acrílico. Solução de emergência para pequeno gotejamento, não substitui impermeabilização de área.",
     resumoOrigem: "ficha do fabricante",
     comoFunciona: "",
-    problemas: [
-      "telhado"
-    ],
+    problemas: ["telhado", "reservatorio"],
     complementos: ["dryko-primer-base-d-agua-dryko-acqua"],
     complementoMotivo: "A fita só cola depois do primer, com 6 h de secagem",
     cores: [
@@ -2046,11 +2031,7 @@ const PRODUTOS = [
     resumo: "Emulsão asfáltica base água para terraço, sacada, área fria, calha de concreto e muro de arrimo. Consome 2 a 3 litros por m², então o galão de 3,6 L cobre cerca de 1,5 m² e o balde de 18 L cobre de 6 a 9 m². Não serve para caixa d'água nem aguenta tráfego pesado. Validade de 12 meses.",
     resumoOrigem: "ficha do fabricante",
     comoFunciona: "",
-    problemas: [
-      "laje",
-      "banheiro",
-      "fundacao"
-    ],
+    problemas: ["laje"],
     cores: [
       "Preto"
     ],
@@ -2676,9 +2657,7 @@ const PRODUTOS = [
     resumo: "Fita asfáltica autoadesiva para reparo rápido de goteira, emenda e furo. Como toda fita asfáltica, precisa de primer antes e não resiste a trânsito de pessoas nem a granizo.",
     resumoOrigem: "ficha do fabricante",
     comoFunciona: "",
-    problemas: [
-      "telhado"
-    ],
+    problemas: ["telhado", "reservatorio"],
     complementos: ["dryko-primer-base-d-agua-dryko-acqua"],
     complementoMotivo: "A fita só cola depois do primer, com 6 h de secagem",
     cores: [
@@ -2915,10 +2894,7 @@ const PRODUTOS = [
     resumo: "Emulsão de asfalto modificado, sem solvente, que não deixa cheiro nem gosto na água. Para terraço, laje, marquise, piso de área molhada e tanque. Exige no mínimo quatro demãos com 24 horas entre cada uma, consumindo 1 kg/m² por demão — são quatro dias de obra.",
     resumoOrigem: "ficha do fabricante",
     comoFunciona: "",
-    problemas: [
-      "laje",
-      "banheiro"
-    ],
+    problemas: ["laje"],
     cores: [],
     demaos: "Mínimo 4, com 24 h entre elas",
     rendimento: "1 kg/m² no total das 4 demãos, ou seja 0,25 kg/m² por demão",
@@ -3065,10 +3041,7 @@ const PRODUTOS = [
     resumo: "Aditivo mineral que vai na massa e bloqueia os capilares do reboco e do concreto. Consome 0,7 a 1,0 kg/m² num reboco de 2 cm. Forma impermeabilização rígida, que não acompanha fissura, e a própria Sika não recomenda o uso em concreto armado ou protendido.",
     resumoOrigem: "ficha do fabricante",
     comoFunciona: "",
-    problemas: [
-      "fundacao",
-      "reservatorio"
-    ],
+    problemas: ["fundacao", "piscina"],
     cores: [],
     demaos: "Consulte a ficha técnica",
     rendimento: "Argamassa: 0,7 a 1,0 kg/m² em reboco de 2 cm · Concreto: ≈ 1,5 kg por saco de 50 kg (3% do peso do cimento)",
@@ -3140,10 +3113,7 @@ const PRODUTOS = [
     resumo: "Aditivo de pega ultrarrápida para estancar infiltração sob pressão, inclusive jorro em subsolo. Atenção: é solução temporária. Serve para parar a água e permitir que a impermeabilização definitiva seja feita depois.",
     resumoOrigem: "ficha do fabricante",
     comoFunciona: "Estanca infiltração sob pressão, inclusive jorro de água em subsolo com lençol freático",
-    problemas: [
-      "fundacao",
-      "reservatorio"
-    ],
+    problemas: [],
     cores: [],
     demaos: "Consulte a ficha técnica",
     rendimento: "Consulte a ficha técnica",
@@ -3187,12 +3157,7 @@ const PRODUTOS = [
     resumo: "Argamassa polimérica bicomponente para caixa d'água, piscina, poço de elevador e umidade em rodapé. Consome 1 kg/m² por demão, em 2 a 4 demãos cruzadas com 3 a 6 horas entre elas. Não serve como acabamento estético.",
     resumoOrigem: "ficha do fabricante",
     comoFunciona: "",
-    problemas: [
-      "banheiro",
-      "reservatorio",
-      "piscina",
-      "fundacao"
-    ],
+    problemas: ["banheiro", "piscina"],
     cores: [
       "Cinza"
     ],
@@ -3254,12 +3219,7 @@ const PRODUTOS = [
     resumo: "Argamassa polimérica bicomponente indicada para pressão de água mais alta e como revestimento final de reservatório. Mesmo consumo do SikaTop 100: 1 kg/m² por demão, de 2 a 4 demãos cruzadas.",
     resumoOrigem: "ficha do fabricante",
     comoFunciona: "",
-    problemas: [
-      "banheiro",
-      "reservatorio",
-      "piscina",
-      "fundacao"
-    ],
+    problemas: ["banheiro", "piscina", "fundacao"],
     cores: [
       "Cinza"
     ],
@@ -3493,11 +3453,7 @@ const PRODUTOS = [
     resumo: "Manta líquida acrílica atóxica, aplicada a frio, para laje, telhado, calha, marquise e caixa d'água não enterrada. Consome cerca de 2 kg/m² em 2 a 4 demãos, e seca entre demãos em 20 a 40 minutos — a mais rápida do catálogo. Em reservatório, precisa de ventilação forçada durante a aplicação.",
     resumoOrigem: "ficha do fabricante",
     comoFunciona: "",
-    problemas: [
-      "laje",
-      "telhado",
-      "reservatorio"
-    ],
+    problemas: ["laje", "telhado"],
     cores: [
       "Branco",
       "Cinza"
@@ -3795,11 +3751,7 @@ const PRODUTOS = [
     resumo: "Massa asfáltica de aplicação a frio para laje, calha, jardineira e área molhada. Consome 2 kg/m², então o galão de 3,9 kg cobre 2 m² e o balde de 20 kg cobre 10 m², com 8 horas entre demãos. Hoje a Vedacit chama esse produto de Massa Asfáltica.",
     resumoOrigem: "ficha do fabricante",
     comoFunciona: "",
-    problemas: [
-      "laje",
-      "telhado",
-      "banheiro"
-    ],
+    problemas: ["laje", "telhado"],
     cores: [],
     demaos: "Consulte a ficha técnica",
     rendimento: "2,0 kg/m²",
@@ -3856,10 +3808,7 @@ const PRODUTOS = [
     resumo: "Aditivo mineral para estrutura abaixo do nível do solo: baldrame, subsolo, muro de contenção e reservatório enterrado. A dosagem muda com o uso: 2 litros por saco de cimento em argamassa e 0,5 litro em concreto. As chapadas de argamassa não podem passar de 4 horas entre uma e outra.",
     resumoOrigem: "ficha do fabricante",
     comoFunciona: "",
-    problemas: [
-      "fundacao",
-      "reservatorio"
-    ],
+    problemas: ["fundacao"],
     cores: [],
     demaos: "Consulte a ficha técnica",
     rendimento: "Argamassa impermeável: 2,0 L por saco de 50 kg de cimento · Concreto impermeável: 0,5 L por saco de 50 kg · ≈ 0,18 L/m² por cm de espessura de argamassa",
@@ -4216,12 +4165,7 @@ const PRODUTOS = [
     resumo: "Argamassa polimérica semiflexível para contrapiso de área úmida, cozinha, banheiro e baldrame. Consome 1 kg/m² por demão. Em reservatório, caixa d'água e piscina, o fabricante manda usar em conjunto com o Impermax 7000 — os dois, não um ou outro.",
     resumoOrigem: "ficha do fabricante",
     comoFunciona: "",
-    problemas: [
-      "banheiro",
-      "reservatorio",
-      "piscina",
-      "fundacao"
-    ],
+    problemas: ["banheiro", "piscina", "fundacao"],
     complementos: ["votomassa-impermax-7000"],
     complementoMotivo: "Em reservatório e piscina os dois são usados juntos, o 1000 primeiro",
     cores: [],
@@ -4267,12 +4211,7 @@ const PRODUTOS = [
     resumo: "Argamassa polimérica flexível com fibras, até 30% mais elástica, para piscina, reservatório elevado e caixa d'água. Vai por cima do Impermax 1000, com tela de poliéster resinada. Nunca pode ficar exposta ao tempo.",
     resumoOrigem: "ficha do fabricante",
     comoFunciona: "",
-    problemas: [
-      "banheiro",
-      "reservatorio",
-      "piscina",
-      "fundacao"
-    ],
+    problemas: ["banheiro", "piscina", "fundacao"],
     complementos: ["votomassa-impermax-1000"],
     complementoMotivo: "Em reservatório e piscina os dois são usados juntos, o 1000 primeiro",
     cores: [],
@@ -4318,11 +4257,7 @@ const PRODUTOS = [
     resumo: "Aditivo que impermeabiliza argamassa e concreto por hidrofugação. Dosagem de 2 litros por saco de 50 kg de cimento, tanto em baldrame quanto em contrapiso, reservatório e piscina. O revestimento vai em duas camadas de cerca de 1,5 cm.",
     resumoOrigem: "ficha do fabricante",
     comoFunciona: "",
-    problemas: [
-      "fundacao",
-      "reservatorio",
-      "piscina"
-    ],
+    problemas: ["fundacao", "piscina"],
     cores: [],
     demaos: "Consulte a ficha técnica",
     rendimento: "Revestimento de paredes e pisos: 1,8 a 2 L por saco de 50 kg de cimento. Contrapiso: 2 L por saco. Concreto de baixa permeabilidade: 0,5 L por saco (ficha Votorantim)",
