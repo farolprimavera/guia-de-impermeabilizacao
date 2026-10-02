@@ -3041,7 +3041,7 @@ const PRODUTOS = [
     resumo: "Aditivo mineral que vai na massa e bloqueia os capilares do reboco e do concreto. Consome 0,7 a 1,0 kg/m² num reboco de 2 cm. Forma impermeabilização rígida, que não acompanha fissura, e a própria Sika não recomenda o uso em concreto armado ou protendido.",
     resumoOrigem: "ficha do fabricante",
     comoFunciona: "",
-    problemas: ["fundacao", "piscina"],
+    problemas: ["fundacao"],
     cores: [],
     demaos: "Consulte a ficha técnica",
     rendimento: "Argamassa: 0,7 a 1,0 kg/m² em reboco de 2 cm · Concreto: ≈ 1,5 kg por saco de 50 kg (3% do peso do cimento)",
