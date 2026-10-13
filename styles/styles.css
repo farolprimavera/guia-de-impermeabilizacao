@@ -1473,6 +1473,15 @@ body.com-bandeja { padding-bottom: 92px; }
   color: var(--branco);
 }
 
+/* Cada coluna empilha: rótulo, valor e, no telefone, o link do WhatsApp
+   embaixo. Sem isso o número e o "Chamar no WhatsApp" caem na mesma linha e
+   se encostam. */
+.rodape-contatos li {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
 .rodape-contatos strong {
   display: block;
   font-size: 0.64rem;
@@ -1483,6 +1492,72 @@ body.com-bandeja { padding-bottom: 92px; }
 }
 
 .rodape-interno { display: grid; gap: 8px; }
+
+/* WHATSAPP E REDES NO RODAPÉ
+
+   São os únicos links do guia que saem para fora. O estilo é de texto, não
+   de botão: o rodapé inteiro é tipográfico, e três bolinhas de marca no
+   meio dele puxariam mais atenção que o preço e o aviso técnico, que é o
+   que o cliente veio ler.
+
+   Altura mínima de 44 px em cada link, a mesma regra dos outros alvos de
+   toque. No rodapé isso importa mais que no meio da página: é o pé da
+   tela, onde o dedo chega torto. */
+.rodape-zap,
+.rodape-rede-texto {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  color: var(--texto-sobre-escuro);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* As redes em bolinha, iguais às do site de pisos da loja — mesma loja, dois
+   rodapés que precisam combinar. Lá a bolinha tem 2,6rem (≈ 42 px); aqui são
+   44, que é o mínimo de toque deste projeto. O fundo translúcido funciona nos
+   dois temas porque o rodapé é escuro em ambos. */
+.rodape-rede {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.12);
+  color: var(--texto-sobre-escuro);
+}
+
+.rodape-rede svg { width: 21px; height: 21px; }
+
+.rodape-rede:hover,
+.rodape-rede:focus-visible { background: rgba(255, 255, 255, 0.25); }
+
+.rodape-zap {
+  gap: 7px;
+  margin-top: 2px;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.rodape-zap svg {
+  width: 17px;
+  height: 17px;
+  flex-shrink: 0;
+  /* O verde do WhatsApp é a marca deles, e sobre o verde-escuro do rodapé
+     ele aparece sem brigar com nada. O texto fica claro, porque o verde em
+     texto corrido reprova em contraste. */
+  color: #4ADE80;
+}
+
+.rodape-zap:hover,
+.rodape-rede-texto:hover { color: var(--branco); }
+
+.rodape-redes {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 10px;
+}
 
 .rodape-linha { margin: 0; font-family: var(--fonte-dado); font-size: 0.78rem; letter-spacing: 0.06em; color: var(--texto-sobre-escuro); }
 

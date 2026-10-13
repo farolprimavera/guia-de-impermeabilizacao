@@ -114,7 +114,22 @@ const CONFIG = {
   condicaoVista: "dinheiro, débito ou Pix",
   condicaoOferta: "dinheiro, débito ou Pix, retirando na loja",
   parcelaMinima: 50,
-  maxParcelas: 10
+  maxParcelas: 10,
+
+  /* Redes da loja, mostradas no rodapé. Abrem em aba nova para o guia
+     continuar aberto atrás — o aparelho do balcão é compartilhado, e
+     cliente que sai para o Instagram não volta sozinho.
+     São os ÚNICOS endereços externos do guia. Nada é carregado de fora:
+     link só sai daqui quando alguém toca nele. Lista vazia some do
+     rodapé, mesmo padrão das fotos e dos logos.
+
+     O campo `icone` escolhe o desenho em ICONES_REDE, no index.js. Rede sem
+     ícone correspondente aparece pelo nome, em texto — o rodapé não quebra. */
+  redes: [
+    { nome: "Instagram", url: "https://www.instagram.com/faroldaprimavera/", icone: "instagram" },
+    { nome: "Facebook", url: "https://www.facebook.com/FarolDaPrimavera/", icone: "facebook" },
+    { nome: "TikTok", url: "https://www.tiktok.com/@faroldaprimavera", icone: "tiktok" }
+  ]
 };
 
 const PROBLEMAS = [
