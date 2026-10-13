@@ -103,9 +103,46 @@
     return /^-?\d*\.?\d*$/.test(texto) ? parseFloat(texto) : NaN;
   }
 
-  /* O menor preco entre os tamanhos, para o cartão dizer "a partir de". */
+  /* ----------------------------- ESTOQUE ------------------------------
+     O campo `esgotado` só existe nos tamanhos que acabaram, então ausente
+     significa disponível. O dado vem do relatório da loja, junto com o
+     preço, e envelhece com ele: a data está em CONFIG.atualizadoEm e
+     aparece no rodapé, para o cliente saber o quanto confiar no selo. */
+  const disponiveis = (produto) =>
+    (produto.tamanhos || []).filter((t) => !t.esgotado);
+
+  /* true quando NENHUM tamanho tem estoque. Decisão do David: o produto
+     continua na lista, com selo, em vez de desaparecer. Cliente que não
+     encontra o produto na tela acha que o guia está incompleto; cliente
+     que lê "esgotado" pergunta no balcão, e aí o vendedor oferece o
+     similar. */
+  const produtoEsgotado = (produto) =>
+    (produto.tamanhos || []).length > 0 && disponiveis(produto).length === 0;
+
+  /* De onde sai todo preço "a partir de": do mais barato QUE DÁ PARA
+     LEVAR. Anunciar o preço de um tamanho esgotado manda o cliente ao
+     balcão com um número que a loja não pode cumprir — e o tamanho
+     esgotado costuma ser justamente o mais barato, que é o que acaba
+     primeiro. Produto inteiro esgotado cai de volta na lista completa:
+     ali o preço é referência, não promessa, e sem isso não haveria preço
+     nenhum para mostrar. */
+  const paraPreco = (produto) => {
+    const livres = disponiveis(produto);
+    return livres.length ? livres : produto.tamanhos || [];
+  };
+
+  /* Selo de esgotado, do produto inteiro. Mesma caixa de aviso do resto do
+     guia, para não inventar vocabulário visual novo. */
+  const seloEsgotado = (produto) =>
+    produtoEsgotado(produto)
+      ? '<p class="selo-esgotado"><strong>Esgotado</strong> no estoque de ' +
+        escapar(CONFIG.atualizadoEm) + ". Pergunte ao vendedor pelo similar.</p>"
+      : "";
+
+  /* O menor preco entre os tamanhos disponíveis, para o cartão dizer
+     "a partir de". */
   const menorPreco = (produto) =>
-    Math.min.apply(null, produto.tamanhos.map(melhorPreco));
+    Math.min.apply(null, paraPreco(produto).map(melhorPreco));
 
   /* O tamanho que aparece no topo da ficha. E o mais barato, não o menor:
      quem chega quer saber por quanto comeca. */
@@ -113,7 +150,7 @@
     /* Sem valor inicial, reduce estoura em produto com tamanhos: [].
        Hoje todos têm, mas o dados.js é editado à mão e um produto novo
        pode nascer sem tamanho antes de alguém preencher os preços. */
-    (produto.tamanhos || []).reduce(
+    paraPreco(produto).reduce(
       (a, b) => (!a ? b : melhorPreco(a) <= melhorPreco(b) ? a : b),
       null
     );
@@ -756,6 +793,7 @@
             '<div><span class="dado-rotulo">Contato com água</span>' +
               '<span class="dado-valor">' + escapar(produto.contatoAgua) + "</span></div>" +
           "</div>" +
+          seloEsgotado(produto) +
           blocoPreco(tamanhoMaisBarato(produto), true,
             produto.tamanhos.length > 1 ? tamanhoMaisBarato(produto).rotulo : null) +
           '<div class="produto-acoes">' +
@@ -986,7 +1024,7 @@
     if (temMetragem) {
       /* Entre os tamanhos que calculam, o de menor custo total: o mesmo
          critério do selo "sai em conta". */
-      const contas = produto.tamanhos
+      const contas = disponiveis(produto)
         .map(function (tam) {
           const c = calcularEmbalagens(tam, metros);
           return c && !c.semPreco && !c.exagerada
@@ -1091,11 +1129,16 @@
     const tamanhos = produto.tamanhos
       .map(
         (t) =>
-          '<div class="tamanho" data-codigo="' + escapar(t.codigo) + '">' +
+          '<div class="tamanho' + (t.esgotado ? " tamanho--esgotado" : "") +
+            '" data-codigo="' + escapar(t.codigo) + '">' +
             '<div class="tamanho-cabecalho">' +
               '<span class="tamanho-rotulo">' + escapar(t.rotulo) +
                 (t.cor ? ' <span class="tamanho-cor">' + escapar(t.cor) + "</span>" : "") +
               "</span>" +
+              /* O selo fica no cabeçalho do tamanho, junto do rótulo, e não
+                 no lugar do preço: o cliente ainda quer saber quanto custa
+                 para decidir se espera a reposição ou troca de tamanho. */
+              (t.esgotado ? '<span class="tamanho-selo">Esgotado</span>' : "") +
             "</div>" +
             blocoPreco(t, false) +
             '<div class="calculo-area" hidden></div>' +
@@ -1173,6 +1216,7 @@
             ? '<div class="aviso-atencao"><div><strong>Atenção</strong>' +
                 escapar(produto.alerta) + "</div></div>"
             : "") +
+          seloEsgotado(produto) +
           blocoPreco(tamanhoMaisBarato(produto), false,
             produto.tamanhos.length > 1 ? tamanhoMaisBarato(produto).rotulo : null) +
           '<div class="produto-acoes">' +
@@ -1270,7 +1314,11 @@
            não ganha selo. */
         let melhor = null;
         if (valido) {
-          const contas = produto.tamanhos
+          /* Esgotado fica fora da disputa. O selo é um conselho de compra,
+             e aconselhar o tamanho que a loja não tem manda o cliente ao
+             balcão pedir o que vai faltar — pior que não aconselhar nada.
+             Mesmo motivo pelo qual precoDesatualizado já ficava fora. */
+          const contas = disponiveis(produto)
             .map(function (t) {
               const c = calcularEmbalagens(t, metros);
               return c && !c.semPreco && !c.exagerada ? { codigo: t.codigo, custo: c.custoMais } : null;
@@ -1478,10 +1526,15 @@
               p.tamanhos
                 .map(function (t) {
                   const nome = t.rotulo + (t.cor ? " " + t.cor : "");
+                  /* O "esgotado" entra aqui porque esta é a única tela em
+                     que o cliente compara tamanhos de produtos diferentes
+                     lado a lado: sem a marca ele escolheria pelo preço o
+                     que a loja não tem. */
                   return escapar(nome) + " — " +
                     (t.precoDesatualizado
                       ? "a confirmar"
-                      : moeda.format(melhorPreco(t)));
+                      : moeda.format(melhorPreco(t))) +
+                    (t.esgotado ? " (esgotado)" : "");
                 })
                 .join("<br>") +
               "</td>"
@@ -1801,7 +1854,7 @@
 
     $("#rodapeLoja").textContent =
       CONFIG.loja + " " + (CONFIG.loja2 || "") +
-      " · Preços atualizados em " + CONFIG.atualizadoEm;
+      " · Preços e estoque atualizados em " + CONFIG.atualizadoEm;
 
     $("#avisoExemplo").hidden = !CONFIG.dadosDeExemplo;
 

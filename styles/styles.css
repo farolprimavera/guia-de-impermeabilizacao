@@ -1090,6 +1090,57 @@ h3 { font-size: 1.35rem; letter-spacing: 0; }
   text-align: right;
 }
 
+/* ESGOTADO
+
+   Neutro de propósito, não vermelho. Faltar estoque não é perigo nem erro
+   do cliente, é um fato que ele precisa ver antes de escolher — e o
+   vermelho aqui competiria com o preço, que já é vermelho, e com os avisos
+   de "não use neste lugar". Mesmo raciocínio do dourado no bloco "corrija
+   a causa antes".
+
+   Só variáveis base: --cimento, --cimento-escuro, --linha-forte e --tinta
+   são todas sobrescritas no tema escuro, então o selo acompanha os dois
+   temas sem nenhuma regra duplicada. */
+.selo-esgotado {
+  margin: 14px 0 0;
+  padding: 10px 14px;
+  background: var(--cimento);
+  border: 1.5px solid var(--linha-forte);
+  border-left: 7px solid var(--linha-forte);
+  border-radius: var(--raio);
+  color: var(--tinta);
+  font-size: 0.88rem;
+}
+
+.selo-esgotado strong {
+  font-family: var(--fonte-dado);
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.tamanho-selo {
+  flex: 0 0 auto;
+  align-self: center;
+  font-family: var(--fonte-dado);
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--tinta);
+  background: var(--cimento-escuro);
+  border-radius: var(--raio);
+  padding: 4px 9px;
+}
+
+/* O tamanho esgotado continua mostrando preço, rendimento e código: quem
+   está decidindo entre esperar a reposição e trocar de tamanho precisa dos
+   dois números, e o vendedor precisa do código. Só a borda muda, para o
+   olho pular o bloco ao varrer a lista. */
+.tamanho--esgotado {
+  border-color: var(--linha-forte);
+  border-style: dashed;
+}
+
 /* especificações */
 .especificacoes { display: grid; gap: 0; border-top: 1px solid var(--linha); }
 
