@@ -1,0 +1,33 @@
+{
+  "name": "Guia de impermeabilização — Farol da Primavera",
+  "short_name": "Guia Impermeabilização",
+  "description": "Encontre o impermeabilizante certo para cada lugar da casa, com preço, rendimento e calculadora de metragem.",
+  "lang": "pt-BR",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#0F3B29",
+  "theme_color": "#0F3B29",
+  "icons": [
+    {
+      "src": "imagens/icone-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "imagens/favicon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "imagens/icone-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

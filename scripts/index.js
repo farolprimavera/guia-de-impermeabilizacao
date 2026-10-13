@@ -1942,5 +1942,36 @@
     rotear();
   }
 
+  /* ------------------- INSTALAR COMO APLICATIVO -------------------
+     Registra o service worker, que é o que falta para o navegador oferecer
+     a instalação do guia. Instalado, ele abre em janela própria, sem a
+     barra de endereço — ver o comentário no topo do sw.js e no index.html.
+
+     DOIS GUARDAS, e os dois importam:
+
+     1. Service worker só existe em HTTPS ou em localhost. Abrindo o
+        index.html direto do disco, pelo file://, o navegador recusa e
+        lançaria erro no console. O guia tem que continuar funcionando com
+        duplo clique no arquivo — é promessa do projeto desde o começo.
+        O localhost entra na conta para dar para testar a instalação antes
+        de publicar, com um `python -m http.server` na pasta.
+     2. Navegador antigo pode não ter navigator.serviceWorker.
+
+     A falha é silenciosa de propósito: se o registro não der certo, o guia
+     funciona igual, só não instala. Nada na tela depende disto. */
+  const servidorSeguro =
+    location.protocol === "https:" ||
+    location.hostname === "localhost" ||
+    location.hostname === "127.0.0.1";
+
+  if ("serviceWorker" in navigator && servidorSeguro) {
+    window.addEventListener("load", function () {
+      navigator.serviceWorker.register("sw.js").catch(function () {
+        /* Sem aviso ao cliente: ele não instalaria nada mesmo, e um erro
+           na tela de um aparelho de balcão assusta à toa. */
+      });
+    });
+  }
+
   iniciar();
 })();

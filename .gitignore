@@ -45,7 +45,6 @@ LEIA-ME.md
 imagens/LEIA-ME.md
 imagens/marcas/LEIA-ME.md
 imagens/marcas/LEIA-ME.csv
-imagens/produtos2/
 
 
 # ----------------------------------------------------------------------------
@@ -85,6 +84,10 @@ imagens/*.png
 !imagens/logo-farol.png
 !imagens/favicon-512.png
 !imagens/apple-touch-icon.png
+# Ícones do aplicativo instalável. PRECISAM subir: sem eles o navegador não
+# oferece a instalação, e o atalho fica sem ícone na tela inicial.
+!imagens/icone-192.png
+!imagens/icone-maskable-512.png
 
 # node_modules aparece se alguém instalar as fontes de novo pelo npm.
 # Os arquivos que o guia usa já estão em styles/fontes/.

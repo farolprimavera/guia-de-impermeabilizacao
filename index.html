@@ -30,6 +30,35 @@
   <link rel="icon" type="image/png" href="imagens/favicon-512.png">
   <link rel="apple-touch-icon" href="imagens/apple-touch-icon.png">
 
+  <!-- ===================== INSTALAR COMO APLICATIVO =====================
+       Com o manifest abaixo, o navegador oferece "instalar" / "adicionar à
+       tela inicial", e o guia passa a abrir em janela própria, sem a barra
+       de endereço. É o que faz sentido num aparelho de balcão: o cliente
+       não vê URL, não volta para outro site e não fecha a aba sem querer.
+
+       display: "standalone" no manifest esconde a barra do navegador mas
+       mantém a barra do sistema (relógio, bateria). Trocar para
+       "fullscreen" esconde as duas — é uma palavra no manifest.json.
+
+       O service worker (sw.js) existe só porque o Chrome exige um para
+       oferecer a instalação. Ele NÃO acelera o guia de propósito; o motivo
+       está explicado no topo daquele arquivo. -->
+  <link rel="manifest" href="manifest.json">
+
+  <!-- Cor da barra do sistema quando aberto como aplicativo. São os mesmos
+       verdes do cabeçalho em cada tema: se ficasse uma cor só, no tema
+       escuro apareceria uma faixa clara em cima da tela escura. -->
+  <meta name="theme-color" content="#0F3B29" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#182220" media="(prefers-color-scheme: dark)">
+
+  <!-- O Safari do iPhone e do iPad ignora o manifest. Para ele, tela cheia
+       e nome do atalho vêm destas três linhas; o ícone é o apple-touch-icon
+       já declarado acima. -->
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Guia Impermeabilização">
+
   <link rel="stylesheet" href="styles/styles.css">
 </head>
 <body>
