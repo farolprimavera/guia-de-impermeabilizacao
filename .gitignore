@@ -76,6 +76,15 @@ preview.html
 # Fotos originais antes do tratamento, se você guardar alguma cópia por aqui.
 imagens/originais/
 
+# Pasta onde o David larga as fotos novas, com nome de produto em vez de id.
+# São os ORIGINAIS, 7,6 MB que não precisam ir para o ar — o que sobe é o
+# resultado tratado, em imagens/produtos/.
+# ESTA REGRA FALTAVA. O CLAUDE.md de 13/10 dizia que ela tinha entrado no
+# commit das fotos, e não tinha: a pasta apareceu como não rastreada no
+# `git status` de 15/10, a um `git add .` de distância de ir para o
+# repositório público.
+imagens/produtos2/
+
 # PNG solto na raiz de imagens/ costuma ser original pesado, como a casa.png
 # de 2,5 MB que foi apagada. Mas o logo da loja é PNG e PRECISA subir, senão
 # o cabeçalho fica sem a marca no site publicado — foi o que aconteceu no
