@@ -263,5 +263,10 @@
 
   <script src="scripts/dados.js"></script>
   <script src="scripts/index.js"></script>
+  <!-- Modo totem: depois de 5 min parado, volta sozinho à tela inicial. Só
+       age no aparelho marcado com ?totem=1 — quem abre o guia em casa não é
+       mandado de volta no meio da navegação. Vem DEPOIS do index.js porque
+       lê o hash que a navegação daqui usa. -->
+  <script src="scripts/totem.js"></script>
 </body>
 </html>

@@ -1563,6 +1563,63 @@ body.com-bandeja { padding-bottom: 92px; }
 
 .rodape-nota { margin: 0; font-size: 0.85rem; max-width: 68ch; }
 
+/* ------------------------------ MODO TOTEM ---------------------------
+   O aviso "Ainda está aí?" que aparece antes de o totem voltar à tela
+   inicial. A lógica está em scripts/totem.js.
+
+   AS CORES MORAM AQUI, NÃO NO JAVASCRIPT. O arquivo equivalente no site de
+   tintas desenha a caixa com branco e verde fixos dentro do próprio script.
+   Aqui isso acenderia uma caixa branca no meio da tela escura, porque este
+   guia tem tema escuro desde 28/08. Usando as variáveis, os dois temas
+   acompanham sozinhos e a auditoria de contraste consegue medir.
+
+   z-index 100: acima da bandeja de comparação (50) e do cabeçalho fixo
+   (40), que são as duas coisas que ficam por cima do resto.
+   -------------------------------------------------------------------- */
+.totem-aviso {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  /* Escurecer o fundo serve nos dois temas: no claro apaga a página, no
+     escuro afasta a caixa do fundo. */
+  background: rgba(0, 0, 0, 0.55);
+}
+
+.totem-caixa {
+  background: var(--superficie);
+  color: var(--tinta);
+  border: 1.5px solid var(--tinta);
+  border-radius: var(--raio);
+  box-shadow: var(--sombra-dura);
+  padding: 28px 26px;
+  max-width: 420px;
+  width: 100%;
+  text-align: center;
+}
+
+.totem-titulo {
+  font-family: var(--fonte-display);
+  font-size: 2rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  margin: 0 0 8px;
+}
+
+.totem-texto { margin: 0 0 20px; font-size: 1.05rem; }
+
+/* O número da contagem em fonte de dado, para não dançar de largura a cada
+   segundo — 15, 14, 13 têm desenhos diferentes nas proporcionais. */
+.totem-texto b { font-family: var(--fonte-dado); }
+
+/* Herda .botao e .botao--cheio, então já vem com os 44 px de alvo de toque
+   e com as cores que invertem no tema escuro. Só cresce um pouco: é o
+   único controle da tela e o cliente tem 15 segundos para achá-lo. */
+.totem-botao { font-size: 0.9rem; padding: 14px 30px; }
+
 /* --------------------------- BLOCO DE PREÇO ---------------------------
    A condição de pagamento anda colada ao valor, nunca em letra miúda no
    rodapé. A super oferta só vale à vista e retirando na loja; quem vai
