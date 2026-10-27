@@ -6,8 +6,9 @@
    embora no meio de uma ficha e o próximo encontra a tela inicial, não o
    produto que o outro estava olhando.
 
-   VEIO DO SITE DE TINTAS, onde já roda. O comportamento é o mesmo — 5 min
-   parado, aviso de 15 s, volta ao início —, mas a implementação foi adaptada
+   VEIO DO SITE DE TINTAS, onde já roda. Lá o tempo é de 5 minutos; aqui
+   começou com 5 e o David baixou para 2 em 27/10. O resto é
+   igual — aviso de 15 s e volta ao início —, mas a implementação foi adaptada
    a este guia em três pontos, e cada um está explicado onde acontece:
    as cores saíram do JavaScript e foram para o styles.css, a volta ao início
    recarrega a página, e a checagem de "está na inicial" entende a navegação
@@ -22,7 +23,7 @@
 (function () {
   "use strict";
 
-  var MINUTOS = 5;               // tempo parado até voltar ao início
+  var MINUTOS = 2;               // tempo parado até voltar ao início
   var AVISO = 15;                // segundos de aviso antes de voltar
   var CHAVE = "farol-totem";
   var INICIO = "index.html";
@@ -149,7 +150,7 @@
   );
 
   /* NA INICIAL LIMPA, NÃO COMEÇA A CONTAR. Sem isto o totem recarregaria a
-     tela inicial a cada 5 minutos a noite inteira, sem ninguém na frente.
+     tela inicial a cada 2 minutos a noite inteira, sem ninguém na frente.
      O contador só nasce quando alguém mexe.
 
      A checagem olha o hash porque a navegação deste guia é toda por hash:
