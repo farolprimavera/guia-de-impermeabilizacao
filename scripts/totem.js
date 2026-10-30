@@ -14,6 +14,10 @@
    recarrega a página, e a checagem de "está na inicial" entende a navegação
    por hash daqui.
 
+   ALÉM DISSO, desde 30/10 este arquivo marca o <html> com data-totem, e o
+   styles.css usa essa marca para esconder os links de WhatsApp no aparelho
+   da loja. O motivo está junto da linha que põe a marca.
+
    SÓ FUNCIONA NO APARELHO MARCADO. Quem abre o guia em casa, pelo link, não
    é mandado de volta para o início no meio da navegação:
      abra uma vez   .../index.html?totem=1   → o aparelho vira totem
@@ -56,6 +60,28 @@
     ligado = new URLSearchParams(location.search).get("totem") === "1";
   }
   if (!ligado) return;
+
+  /* MARCA O <html>, E É DAQUI QUE O CSS ESCONDE O QUE APONTA PARA FORA.
+     No totem o botão "Chamar no WhatsApp" da ficha e o link igual no rodapé
+     não fazem sentido, por três motivos: o cliente já está dentro da loja; o
+     aparelho é da loja, então o wa.me abriria o WhatsApp DO TOTEM, com a
+     conta de quem estiver logado nele ou numa tela de login; e o toque
+     levaria o cliente para outro aplicativo, que é justamente o que este
+     arquivo existe para evitar. O que o vendedor precisa — o código do
+     produto — continua na tela.
+
+     AS REDES SOCIAIS DO RODAPÉ CONTINUAM, por decisão do David em 30/10.
+     Elas têm o mesmo risco de levar o cliente para fora; se um dia o totem
+     aparecer parado num feed, é só acrescentar `.rodape-rede` à regra do
+     styles.css — não há mais nada a mudar.
+
+     POR QUE CSS, E NÃO DEIXAR DE DESENHAR NO index.js: o index.js monta a
+     tela inteira na hora em que é lido, ANTES deste arquivo, então na hora
+     de montar a ficha ainda não há como saber que o aparelho é um totem.
+     Pelo CSS funciona de qualquer jeito, inclusive nas telas que ele
+     redesenha depois, e sem piscar — a pintura só acontece quando o parser
+     termina os dois scripts. */
+  document.documentElement.setAttribute("data-totem", "1");
 
   /* O tempo que o contador espera ANTES de mostrar o aviso. O aviso ocupa
      os últimos AVISO segundos do total, por isso a subtração.

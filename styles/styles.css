@@ -1620,6 +1620,22 @@ body.com-bandeja { padding-bottom: 92px; }
    único controle da tela e o cliente tem 15 segundos para achá-lo. */
 .totem-botao { font-size: 0.9rem; padding: 14px 30px; }
 
+/* NO TOTEM, OS LINKS DE WHATSAPP SOMEM.
+   A marca data-totem é posta pelo scripts/totem.js, e o porquê está lá.
+   Em resumo: o cliente do totem já está na loja, o wa.me abriria o WhatsApp
+   do próprio aparelho, e o toque tiraria o cliente do guia.
+
+   display:none, não visibility nem opacidade: assim o botão também sai da
+   ordem do Tab e do leitor de tela. Controle escondido que ainda recebe foco
+   é pior que controle nenhum.
+
+   AS REDES SOCIAIS FICAM (decisão do David em 30/10). Se um dia tiverem de
+   sair também, é só acrescentar `html[data-totem] .rodape-rede` aqui. */
+html[data-totem] .botao--zap,
+html[data-totem] .rodape-zap {
+  display: none;
+}
+
 /* --------------------------- BLOCO DE PREÇO ---------------------------
    A condição de pagamento anda colada ao valor, nunca em letra miúda no
    rodapé. A super oferta só vale à vista e retirando na loja; quem vai
