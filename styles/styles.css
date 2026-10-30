@@ -1636,6 +1636,76 @@ html[data-totem] .rodape-zap {
   display: none;
 }
 
+/* -------------------------- BOTÃO "TOPO" ----------------------------
+   Flutua no canto de baixo à direita depois que a página desce. Veio do
+   site de pisos; o JavaScript está no fim do index.js, com o porquê das
+   duas diferenças.
+
+   z-index 45: acima do cabeçalho fixo (40) e abaixo da bandeja de
+   comparação (50) e do aviso do totem (100). A ordem importa — a bandeja
+   e o aviso são decisões em curso, o "Topo" é só conveniência.
+
+   O CONTORNO BRANCO não é enfeite: o botão passa por cima de fotos de
+   produto em fundo branco e do rodapé verde-escuro, e sem ele some num
+   dos dois.
+
+   3,4rem = 54 px, acima do mínimo de 44 px de alvo de toque do projeto.
+   -------------------------------------------------------------------- */
+.ir-topo {
+  position: fixed;
+  right: max(1rem, env(safe-area-inset-right));
+  bottom: calc(1rem + env(safe-area-inset-bottom));
+  z-index: 45;
+  display: grid;
+  justify-items: center;
+  align-content: center;
+  gap: 0.05rem;
+  width: 3.4rem;
+  height: 3.4rem;
+  border: 2px solid #fff;
+  border-radius: 50%;
+  background: var(--verde-escuro);
+  color: var(--texto-sobre-escuro);
+  font: inherit;
+  font-size: 0.66rem;
+  font-weight: 700;
+  line-height: 1;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
+  animation: ir-topo-aparecer 0.2s ease-out;
+}
+.ir-topo svg { width: 1.3rem; height: 1.3rem; }
+/* O realce do hover é um véu branco por cima, não outra cor: `--verde`
+   clareia no tema escuro (#4FB07C) e o texto claro em cima dele cairia
+   para 2,7:1. Véu translúcido clareia qualquer fundo sem inverter a
+   relação com o texto — é o mesmo recurso já usado no rodapé. */
+.ir-topo:hover {
+  background-image: linear-gradient(rgba(255, 255, 255, 0.14), rgba(255, 255, 255, 0.14));
+}
+.ir-topo[hidden] { display: none; }
+
+@keyframes ir-topo-aparecer {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: none; }
+}
+
+/* Com a bandeja do Comparar aberta, sobe para não ficar embaixo dela.
+   A altura vem medida do próprio elemento, em `medirBandeja()` no
+   index.js: os chips quebram linha e a barra passa de 92 para quase
+   140 px num celular estreito com quatro produtos. O 92 px aqui é só o
+   valor de emergência, para o caso de a variável não ter sido escrita. */
+body.com-bandeja .ir-topo {
+  bottom: calc(var(--bandeja-altura, 92px) + 0.75rem + env(safe-area-inset-bottom));
+}
+
+@media (max-width: 560px) {
+  .ir-topo { right: max(0.75rem, env(safe-area-inset-right)); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ir-topo { animation: none; }
+}
+
 /* --------------------------- BLOCO DE PREÇO ---------------------------
    A condição de pagamento anda colada ao valor, nunca em letra miúda no
    rodapé. A super oferta só vale à vista e retirando na loja; quem vai

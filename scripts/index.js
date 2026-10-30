@@ -1487,7 +1487,33 @@
       .join("");
 
     $("#abrirComparacao").textContent = "Comparar (" + total + ")";
+    medirBandeja();
   }
+
+  /* A ALTURA DA BANDEJA NÃO É FIXA: os chips com o nome dos produtos
+     quebram linha, então ela vai de ~92 px com um produto a ~140 px com
+     quatro num celular estreito. O botão "Topo" precisa ficar ACIMA dela,
+     e um número chutado no CSS erra justamente nos casos cheios — foi o
+     que aconteceu na primeira tentativa, com o botão encostando na barra
+     a 414 px de largura.
+
+     Então a medida real vai para uma variável CSS. O `padding-bottom: 92px`
+     do `body.com-bandeja` continua fixo e é outra conversa: ele só precisa
+     impedir que a barra cubra o último produto, e errar por alguns pixels
+     ali não atrapalha ninguém. */
+  function medirBandeja() {
+    const bandeja = $("#bandeja");
+    if (!bandeja) return;
+    document.body.style.setProperty(
+      "--bandeja-altura",
+      bandeja.hidden ? "0px" : bandeja.offsetHeight + "px"
+    );
+  }
+
+  /* Girar o tablet rearranja os chips e muda a altura da barra. Sem isto o
+     botão ficaria na posição da orientação anterior até alguém mexer na
+     comparação. */
+  window.addEventListener("resize", medirBandeja, { passive: true });
 
   /* Tabela lado a lado. As linhas vem de LINHAS_COMPARACAO, no dados.js,
      e não daqui: assim dá para mudar o que se compara sem mexer em código. */
@@ -1972,6 +1998,57 @@
       });
     });
   }
+
+  /* ------------------------- BOTÃO "TOPO" -------------------------
+     Copiado do site de pisos (`js/app.js`), onde já roda, para o cliente
+     não precisar arrastar a tela inteira de volta depois de descer uma
+     lista de 31 produtos. SE MUDAR NUM, MUDE NO OUTRO: são dois projetos
+     separados, sem nada que os mantenha em sincronia além desta anotação —
+     a mesma situação dos ícones das redes sociais.
+
+     DUAS DIFERENÇAS EM RELAÇÃO AO ORIGINAL, e as duas são deste guia:
+
+     1. A ROLAGEM NÃO PEDE `behavior: "smooth"`. O original passa a palavra
+        no próprio scrollTo, o que ATROPELA o `prefers-reduced-motion`.
+        Aqui o `styles.css` já tem `html { scroll-behavior: smooth }` e já
+        o devolve para `auto` quando o aparelho pede menos movimento
+        (regra 6). Omitindo o campo, a decisão fica com o CSS, que é quem
+        conhece a preferência do cliente.
+
+     2. O LIMIAR OLHA A ALTURA DA PÁGINA. 500 px fixos nunca apareceriam
+        numa tela curta — e o totem em pé rola pouco. Abaixo disso vale
+        metade do que dá para rolar, com piso de 150 px para o botão não
+        nascer junto com a página. */
+  (function () {
+    const b = document.createElement("button");
+    b.type = "button";
+    b.className = "ir-topo";
+    b.hidden = true;
+    b.setAttribute("aria-label", "Voltar ao topo da página");
+    b.innerHTML =
+      '<svg viewBox="0 0 24 24" aria-hidden="true">' +
+        '<path d="M12 19V5M5 12l7-7 7 7" fill="none" stroke="currentColor" ' +
+          'stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>' +
+      "</svg><span>Topo</span>";
+    b.addEventListener("click", function () {
+      window.scrollTo({ top: 0 });
+    });
+    document.body.appendChild(b);
+
+    /* requestAnimationFrame para não recalcular a cada pixel de rolagem:
+       num totem Android o evento dispara muito mais que o quadro. */
+    let agendado = false;
+    window.addEventListener("scroll", function () {
+      if (agendado) return;
+      agendado = true;
+      requestAnimationFrame(function () {
+        const rolavel =
+          document.documentElement.scrollHeight - window.innerHeight;
+        b.hidden = window.scrollY < Math.min(500, Math.max(150, rolavel / 2));
+        agendado = false;
+      });
+    }, { passive: true });
+  })();
 
   iniciar();
 })();
