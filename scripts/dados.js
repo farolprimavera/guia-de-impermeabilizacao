@@ -108,7 +108,7 @@ const CONFIG = {
   /* Data do relatório da loja de onde saíram preço E quantidade. Aparece no
      rodapé. Atualize junto com os preços: é por ela que o cliente sabe o
      quanto confiar no selo ESGOTADO. */
-  atualizadoEm: "26/10/2026",
+  atualizadoEm: "09/11/2026",
   dadosDeExemplo: false,
   limiteComparacao: 4,
   condicaoVista: "dinheiro, débito ou Pix",
@@ -3367,7 +3367,6 @@ const PRODUTOS = [
         precoPrazo: 109.0,
         precoVista: 99.0,
         precoOferta: null,
-        esgotado: true,
         parcelas: 2,
         coberturaMin: 0.67,
         coberturaMax: 0.67,
@@ -3906,6 +3905,7 @@ const PRODUTOS = [
         precoPrazo: 29.9,
         precoVista: 27.9,
         precoOferta: null,
+        esgotado: true,
         parcelas: 1,
         coberturaMin: null,
         coberturaMax: null,
@@ -4121,8 +4121,8 @@ const PRODUTOS = [
       {
         rotulo: "45 cm",
         codigo: "1009652",
-        precoPrazo: 119.9,
-        precoVista: 112.9,
+        precoPrazo: 79.9,
+        precoVista: 79.9,
         precoOferta: 59.9,
         parcelas: 2,
         coberturaMin: 4.5,
@@ -4135,8 +4135,8 @@ const PRODUTOS = [
       {
         rotulo: "60 cm",
         codigo: "1011420",
-        precoPrazo: 171.9,
-        precoVista: 168.9,
+        precoPrazo: 99.9,
+        precoVista: 99.9,
         precoOferta: 89.0,
         parcelas: 3,
         coberturaMin: 6.0,
@@ -4229,6 +4229,7 @@ const PRODUTOS = [
         precoPrazo: 159.0,
         precoVista: 149.0,
         precoOferta: null,
+        esgotado: true,
         parcelas: 3,
         coberturaMin: 45.0,
         coberturaMax: 60.0,
@@ -4365,6 +4366,7 @@ const PRODUTOS = [
         precoPrazo: 45.9,
         precoVista: 42.9,
         precoOferta: null,
+        esgotado: true,
         parcelas: 1,
         coberturaMin: null,
         coberturaMax: null,

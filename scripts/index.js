@@ -1111,9 +1111,25 @@
   function blocoComplementos(produto) {
     if (!produto.complementos || !produto.complementos.length) return "";
 
+    /* COMPLEMENTO ESGOTADO NÃO APARECE (decisão do David, 09/11). Mandar o
+       cliente levar junto um produto que não está na prateleira é pior que
+       não sugerir nada: ele vai ao balcão pedir pelo nome e ouve que não
+       tem. Apareceu pela primeira vez em 09/11, quando o Ecoprimer Viapol e
+       o Impermax 1000 zeraram e continuavam sendo sugeridos.
+
+       ISTO TEM UM CUSTO, e está registrado de propósito: quando o único
+       complemento some, some junto o `complementoMotivo` — a frase que
+       explica POR QUE ele é necessário ("a fita só cola depois do primer").
+       O cliente leva a fita sem saber que precisa de primer. É o caso da
+       Fita Viapol hoje. Se isso aparecer como problema no balcão, a saída
+       é mostrar o aviso técnico sem o produto, não voltar a sugerir o que
+       está esgotado. */
     const itens = produto.complementos
       .map(produtoDe)
       .filter(Boolean)
+      .filter(function (c) {
+        return !produtoEsgotado(c);
+      })
       .map(function (c) {
         const preco = menorPreco(c);
         return (
