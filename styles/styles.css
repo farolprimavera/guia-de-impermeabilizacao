@@ -1620,19 +1620,28 @@ body.com-bandeja { padding-bottom: 92px; }
    único controle da tela e o cliente tem 15 segundos para achá-lo. */
 .totem-botao { font-size: 0.9rem; padding: 14px 30px; }
 
-/* NO TOTEM, OS LINKS DE WHATSAPP SOMEM.
+/* NO TOTEM, NADA QUE APONTE PARA FORA DA LOJA.
    A marca data-totem é posta pelo scripts/totem.js, e o porquê está lá.
    Em resumo: o cliente do totem já está na loja, o wa.me abriria o WhatsApp
-   do próprio aparelho, e o toque tiraria o cliente do guia.
+   do próprio aparelho, e qualquer um destes toques tiraria o cliente do guia.
 
-   display:none, não visibility nem opacidade: assim o botão também sai da
+   display:none, não visibility nem opacidade: assim o controle sai também da
    ordem do Tab e do leitor de tela. Controle escondido que ainda recebe foco
    é pior que controle nenhum.
 
-   AS REDES SOCIAIS FICAM (decisão do David em 30/10). Se um dia tiverem de
-   sair também, é só acrescentar `html[data-totem] .rodape-rede` aqui. */
+   AS REDES SOCIAIS ENTRARAM EM 17/11, por decisão do David. Elas ficaram de
+   fora em 30/10 e o risco já estava anotado desde 13/10: abrem em ABA NOVA,
+   então o cliente toca no Instagram, vai embora, e o próximo encontra o totem
+   num feed — com o guia vivo atrás, onde ninguém olha. Num aparelho de balcão
+   compartilhado isso é pior que no celular de casa.
+
+   O RODAPÉ NÃO FICA VAZIO: a coluna "Redes sociais" some inteira no totem
+   (o título junto, senão sobraria um rótulo sem nada embaixo), e telefone,
+   endereço e horário continuam. Quem usa o guia em casa, pelo link, continua
+   vendo as três redes normalmente. */
 html[data-totem] .botao--zap,
-html[data-totem] .rodape-zap {
+html[data-totem] .rodape-zap,
+html[data-totem] .rodape-redes-coluna {
   display: none;
 }
 

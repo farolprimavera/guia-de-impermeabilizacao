@@ -1951,7 +1951,12 @@
        aberta mexa nesta pela window.opener. */
     const redes = CONFIG.redes || [];
     if (redes.length) {
-      colunas.push(
+      /* ESTA COLUNA VAI MARCADA porque o totem a esconde INTEIRA, título
+         junto (ver a regra html[data-totem] no styles.css). Escondendo só
+         os ícones sobraria o rótulo "REDES SOCIAIS" sem nada embaixo. */
+      colunas.push({
+        classe: "rodape-redes-coluna",
+        html:
         "<strong>Redes sociais</strong>" +
         '<span class="rodape-redes">' +
         redes.map(function (r) {
@@ -1967,11 +1972,15 @@
             "</a>";
         }).join("") +
         "</span>"
-      );
+      });
     }
 
-    $("#rodapeContatos").innerHTML = colunas.map(function (html) {
-      return "<li>" + html + "</li>";
+    /* Cada coluna é só o HTML de dentro do <li>, mas uma delas precisa de
+       classe própria — por isso o item pode vir como texto ou como objeto. */
+    $("#rodapeContatos").innerHTML = colunas.map(function (item) {
+      const texto = typeof item === "string";
+      return "<li" + (texto ? "" : ' class="' + item.classe + '"') + ">" +
+        (texto ? item : item.html) + "</li>";
     }).join("");
 
     $("#rodapeLoja").textContent =
