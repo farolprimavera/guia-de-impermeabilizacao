@@ -108,7 +108,7 @@ const CONFIG = {
   /* Data do relatório da loja de onde saíram preço E quantidade. Aparece no
      rodapé. Atualize junto com os preços: é por ela que o cliente sabe o
      quanto confiar no selo ESGOTADO. */
-  atualizadoEm: "18/11/2026",
+  atualizadoEm: "19/11/2026",
   dadosDeExemplo: false,
   limiteComparacao: 4,
   condicaoVista: "dinheiro, débito ou Pix",
@@ -3719,7 +3719,6 @@ const PRODUTOS = [
         precoPrazo: 12.9,
         precoVista: 12.9,
         precoOferta: null,
-        esgotado: true,
         parcelas: 1,
         coberturaMin: null,
         coberturaMax: null,
@@ -3734,7 +3733,6 @@ const PRODUTOS = [
         precoPrazo: 16.9,
         precoVista: 16.9,
         precoOferta: null,
-        esgotado: true,
         parcelas: 1,
         coberturaMin: null,
         coberturaMax: null,
