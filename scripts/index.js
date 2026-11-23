@@ -1283,7 +1283,7 @@
           "</div>" +
         "</div>" +
         '<div class="ficha-imagem">' +
-          '<img data-fallback="Foto do produto: salve em ' + escapar(produto.imagem) + '" ' +
+          '<img data-fallback="Foto em breve" ' +
           'src="' + escapar(produto.imagem) + '" alt="Embalagem do ' + escapar(produto.nome) + '">' +
         "</div>" +
       "</div>" +
@@ -1404,13 +1404,16 @@
       }
     }
 
-    // troca o fallback da foto por um bloco de texto, e não pelas iniciais
+    // troca o fallback da foto por um bloco de texto, e não pelas iniciais.
+    // O texto é para o CLIENTE: desde 23/11/2026 o painel inclui produto novo
+    // antes da foto existir, então o aviso não fala mais em caminho de arquivo.
+    // Onde salvar a foto continua em produto.imagem, no dados.js.
     const foto = $("#fichaProduto .ficha-imagem img");
     if (foto) {
       foto.addEventListener("error", function () {
         const vazio = document.createElement("p");
         vazio.className = "ficha-imagem-vazia";
-        vazio.textContent = "Sem foto ainda — salve em " + produto.imagem;
+        vazio.textContent = "Foto em breve";
         foto.replaceWith(vazio);
       });
     }
