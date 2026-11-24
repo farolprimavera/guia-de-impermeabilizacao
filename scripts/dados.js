@@ -2104,7 +2104,7 @@ const PRODUTOS = [
         cor: "Preto",
         precoPrazo: 56.9,
         precoVista: 56.9,
-        precoOferta: 39.0,
+        precoOferta: null,
         parcelas: 1,
         coberturaMin: 1.2,
         coberturaMax: 1.8,
